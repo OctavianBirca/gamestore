@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>La Boutique Française - 100% Made in France</title>
+    <title>Gamestore</title>
     <meta name="description" content="La boutique spécialisée dans la fabrication Made In France">
 
     <link rel="stylesheet" href="{{ asset ('assets/css/style.css') }}">
@@ -21,17 +21,26 @@
 <header data-bs-theme="dark">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ path('app_home') }}">La Boutique Française</a>
+            <a class="navbar-brand" href="{{ path('app_home') }}">GameStore</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Accuiel</a>
+                        <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Accueil</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            {% for category in allCategories %}
+                                <li><a class="dropdown-item" href="{{ path('app_category', {slug:category.slug}) }}">{{category.name}}</a></li>
+                            {% endfor %}
+                            
+                           
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
@@ -48,7 +57,10 @@
                     
                     {% endif %}
                     
-                    <a href=""><i data-feather="shopping-cart"></i></a>
+                    <a href="{{ path('app_cart') }}"><i data-feather="shopping-cart"></i>
+                    <span class="badge text-bg-light">{{ fullCartQuantity }}</span>
+                    
+                    </a>
                     
 
                 </div>
@@ -58,11 +70,20 @@
 </header>
 
 <main>
+    <div class="container">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="mt-5 alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
     {% block body %} {% endblock %}
 
     <!-- FOOTER -->
     <footer class="container">
-        <p>&copy; 2017–2024 La Boutique Française <a href="#">CGV</a> &middot; <a href="#">CGU</a></p>
+        <p>&copy; 2024 Gamestore <a href="#">CGV</a> &middot; <a href="#">CGU</a></p>
     </footer>
 
 </main>

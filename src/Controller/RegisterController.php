@@ -23,9 +23,15 @@ class RegisterController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            #dd($form->getData());
+            
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->addFlash(
+                'success',
+                "Votre a ete cree!"
+            );
+
+            return $this->redirectToRoute('app_login');
         }
      
         return $this->render('register/index.html.twig', [

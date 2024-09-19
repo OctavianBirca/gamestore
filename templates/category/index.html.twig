@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+
+<div class="container my-5">
+    <h1>{{ category.name }}</h1>
+    <p> {{ category.products|length }} Juex </p>
+    <div class="row">
+                
+        {% for product in category.products %}
+           <div class="card col-md-4" >
+                <a href="{{ path ('app_product', {slug:product.slug}) }}">
+                    <img class="card-img-top" src="/uploads/{{ product.image }}" alt="Image {{product.name}}">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">product</p>
+                    <a href="{{ path('app_category', { slug : product.category.slug } ) }}" class="btn btn-primary"> {{product.category.name}}</a>
+                    <span class="d-block">{{product.price|priceEuro}}</span>
+                    <a href="#" class="btn btn-primary">Voir</a>
+                </div>
+            </div>
+
+        {% endfor %}    
+        
+    </div>
+    
+</div>
+{% endblock %}

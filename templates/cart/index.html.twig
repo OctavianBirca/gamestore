@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-2">
+            {% include 'account/_menu.html.twig' %}
+        </div>
+        <div class="col-md-10">
+            Cart items 
+        
+            {% for product in cart %} 
+                <div class="card mb-3" style=" overflow: hidden;">
+                    <div class="row g-0 h-100">
+                        <div class="col-5 col-sm-4">
+                            <div class="h-100 w-100 overflow-hidden">
+                                <img src="/uploads/{{product.object.image}}" class="img-fluid h-100 w-auto" alt="image {{ product.object.name}}">
+                            </div>
+                        </div>
+                        <div class="col-7 col-sm-8">
+                            <div class="card-body d-flex flex-column justify-content-between h-100">
+                                <h5 class="card-title">{{ product.object.name}}</h5>
+                                <div class="row">
+                                    <div class="col-4 card-text text-end">Price: {{product.object.price|priceEuro}}</div>
+                                    <p class="col-3 card-text text-end"><a href="{{ path('app_cart_decrease',{id:product.object.id})}}" >-<a/> x{{product.qty}} <a href="{{ path('app_cart_add',{id:product.object.id})}}" >+<a/></p>
+                                    <p class="col-3 card-text text-end"><strong>Total: {{(product.qty * product.object.price) |priceEuro }} </strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}     
+
+            
+
+            <div class="row">
+                <div class="col-3">
+                    <a href="{{path('app_cart_remove')}}" class="btn btn-danger" >Vider le panier</a>
+                </div>
+                <div class="col-3">
+                    Total produit <span class="badge bg-dark p-2">{{fullCartQuantity}}</span >
+                </div>
+
+                <div class="col-3">
+                    Prix total <span class="badge bg-dark p-2">{{totalSum|priceEuro}}</span >
+                </div>
+
+                <div class="col-3">
+                    <a href="{{path('app_cart_remove')}}" class="btn btn-success" >Commander</a>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}
