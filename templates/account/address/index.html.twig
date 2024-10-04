@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-2">
+            {% include 'account/_menu.html.twig' %}
+        </div>
+        <div class="col-md-10 mb-3">
+            <div class="d-flex justify-content-between">
+                <h4>Mes adresses</h4> 
+                <a href="{{path('app_account_address_form')}}" class="btn btn-dark">Ajouter une adresse</a>
+            </div>
+
+            {% if app.user.addresses|length == 0 %}
+                <div class="alert alert-danger mt-4" role="alert">
+                    Vous n'avez aucun adresse.
+                </div>
+            {% else %}
+                <div class="row mt-3">
+                    {% for address in app.user.addresses %}
+                        <div class="col-md-3">
+                            <div>{{address.firstname}} {{address.lastname}} 
+                            <div>{{address.address}} {{address.postal}} 
+                            {{address.city}} {{address.Country}} </br>
+                            {{address.phone}} </div>
+                            <a href="{{path('app_account_address_form', {id : address.id})}}" class="btn btn-dark btn-sm"> Editer </a>
+                            <a href="{{path('app_account_addresses_delete', {id : address.id})}}" class="btn btn-danger btn-sm"> Supprime </a>
+                            
+
+                        </div>
+                    
+                    {% endfor %}
+                </div>    
+            {% endif %}
+
+
+            
+
+           
+
+            
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

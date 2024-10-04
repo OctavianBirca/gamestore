@@ -1,0 +1,81 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block main %}
+
+
+<h3> Commande # {{order.id}}</h3>
+{{ include('admin/state.html.twig', {field : {'value' : order.state}}) }}
+ <span> Passee le {{order.createdAt|date('d/m/Y')}} </span> <br/>
+ <span> Stripe session Id {{order.stripeSessionId}} </span>
+
+ 
+
+<div class="row mt-3">
+    <div class="col-md-6 bg-light ml-2">
+        <h4>Adresse</h4>
+        {{ order.delivery|raw}}
+    </div>
+    <div class="col-md-6 bg-light">
+        <h4>Shop</h4>
+        {{order.carrier}}
+    </div>
+</div>
+
+       {% for product in order.orderDetails %}
+
+        {% endfor %}
+        
+        
+       
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Produit</th>
+      <th scope="col">Image</th>
+      <th scope="col">Prix</th>
+      <th scope="col">Quantite</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% set totalQuantity = 0 %}
+  {% set totalPrice = 0 %}
+    {% for product in order.orderDetails %}
+    <tr>
+        
+      <td>{{product.productName}}</th>
+      <td><img src="/uploads/{{ product.productImage }}" alt="{{ product.productName }}" style="max-width: 100px;"/></td>
+      <td>{{product.productPrice|priceEuro}}</th>
+      {% set totalPrice = totalPrice + product.productPrice %}
+      <td>{{product.productQuantity}}</th>
+       {% set totalQuantity = totalQuantity + product.productQuantity %}
+      <td>{{(product.productQuantity * product.productPrice)|priceEuro}}</th>
+        
+    </tr>
+    {% endfor %}
+
+    <tr>
+      <td colspan="4">{{order.carrier}}</td>
+      <td>{{order.carrierPrice|priceEuro}}</td>
+    </tr>
+
+    
+    <tr>
+      <th scope="col">Total</th>
+      <th scope="col"></th>
+      <th scope="col">{{totalPrice|priceEuro}}</th>
+      <th scope="col">{{totalQuantity}}</th>
+      <th scope="col">{{(totalPrice + order.carrierPrice)|priceEuro}}</th>
+    </tr>
+     
+  </tbody>
+</table>
+
+
+
+
+
+{% endblock %} 
+

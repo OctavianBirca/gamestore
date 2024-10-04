@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OrderController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Ma commande</h1>
+   
+    <div class="row">
+            
+
+        <div class="col-md-8">
+
+            {% for product in cart %} 
+                <div class="card mb-3" style=" overflow: hidden;">
+                    <div class="row g-0 h-100">
+                        <div class="col-5 col-sm-4">
+                            <div class="h-100 w-100 overflow-hidden">
+                                <img src="/uploads/{{product.object.image}}" class="img-fluid h-100 w-auto" alt="image {{ product.object.name}}">
+                            </div>
+                        </div>
+                        <div class="col-7 col-sm-8">
+                            <div class="card-body d-flex flex-column justify-content-between h-100">
+                                <h5 class="card-title">{{ product.object.name}}</h5>
+                                <div class="row">
+                                    <div class="col-4 card-text text-end">Price: {{product.object.price|priceEuro}}</div>
+                                    <p class="col-3 card-text text-end">x{{product.qty}}</p>
+                                    <p class="col-3 card-text text-end"><strong>Total: {{(product.qty * product.object.price) |priceEuro }} </strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %} 
+            <div class="card">
+                <div class="card-header">
+                    Adresse de livraison:
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title small">{{choices.addresses.firstname}} {{choices.addresses.firstname}} </h5>
+                    <p class="card-text small">
+                        {{choices.addresses.address}} </br> 
+                        {{choices.addresses.city}} - {{choices.addresses.country}} </br>
+                        {{choices.addresses.phone}}</p>
+                </div>
+                
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    Livreur:
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title small">{{choices.carriers.name}}</h5>
+                    <p class="card-text small">
+                        {{choices.addresses.address}} </br> 
+                        {{choices.carriers.description}}</br>
+                        {{choices.addresses.phone}}</p>
+                </div>
+                <div class="card-footer text-muted">
+                     {{choices.carriers.price|priceEuro}}
+                </div>
+            </div>
+           
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mt-3">
+                <div class="card-header">
+                    Total Produit:
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title small">Total produits : {{fullCartQuantity}} </h5>
+                    <p class="card-text small strong">
+                        Total: {{totalSum|priceEuro}} </br> 
+                        
+                        Transporter: {{choices.carriers.price|priceEuro}} 
+                    </p>
+                </div>
+                <div class="card-footer text-muted">
+                    Total commande: {{(totalSum + choices.carriers.price)|priceEuro}}
+                </div>
+                   
+            </div>
+            <a href="{{ path('app_payment', { 'id_order' : order.id}) }}" class="btn btn-success mt-5 mw-100"> Payer+ </a>  
+            
+        </div> 
+        
+    </div>
+        
+</div>       
+       
+</div>
+{% endblock %}

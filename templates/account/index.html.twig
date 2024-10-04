@@ -4,13 +4,46 @@
 {% block body %}
 
 
+
 <div class="container my-5">
     <div class="row">
         <div class="col-md-2">
             {% include 'account/_menu.html.twig' %}
         </div>
         <div class="col-md-10">
-            .... 
+            {% if orders|length == 0 %}
+                <div class="alert alert-info">
+                    Vous n'avez aucun commande!
+                </div>
+
+            {% else %}
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Statut</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <th scope="row">{{order.id}}</th>
+                            <td>{{order.createdAt|date('d/m/Y')}}</td>
+                            <td>{{ include('admin/state.html.twig', {field : {'value' : order.state}}) }}</td>
+                            <td>{{order.orderPrice|priceEuro}}</td>
+                            <td><a href='{{ path('app_account_order', {'id_order' : order.id}) }}' class="btn btn-primary btn-sm">Voir</a></td>
+                        </tr>
+                    {% endfor %}
+                                      
+                    </tbody>
+                </table>
+
+            {% endif %}
+
         </div>
     </div>
     
