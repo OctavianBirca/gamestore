@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5 mb-5">
+        <h1>Mot de passe oublie</h1>
+        {{ form(PasswordRecoveryFormType) }}
+
+        <a href="{{ path ('app_login') }}"> Vous avez un compte? </a>
+    </div>
+
+
+
+{% endblock %}

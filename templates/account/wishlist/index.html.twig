@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+
+<div class="container my-5">
+    <div class="container my-5">
+    <div class="row">
+        <div class="col-md-3">
+            {% include 'account/_menu.html.twig' %}
+        </div>
+        <div class="col-md-9">
+            <h1>Mon compte</h1>
+            <h2>Ma liste de souhaite</h2>
+            {% if app.user.wishlists|length > 0 %}
+                <div class="row">
+                    {% for product in app.user.wishlists %}
+                        <div class="card col-md-4" >
+                            <a href="{{ path ('app_product', {slug:product.slug}) }}">
+                                <img class="card-img-top" src="/uploads/{{ product.image }}" alt="Image {{product.name}}">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{product.name}}</h5>
+                                <p class="card-text">product</p>
+                                <a href="{{ path('app_category', { slug : product.category.slug } ) }}" class="btn btn-primary"> {{product.category.name}}</a>
+                                <span class="d-block">{{product.price|priceEuro}}</span>
+                            
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic outlined button group">
+                                    <a href="{{ path ('app_product', {slug:product.slug}) }}" type="button" class="btn btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
+                                    <a href="{{ path ('app_product', {slug:product.slug}) }}" type="button" class="btn btn-outline-primary"><i class="fa-solid fa-cart-shopping"></i></a>
+                                    <a href="{{ path ('app_account_wishlist_remove', {id :product.id}) }}" type="button" class="btn btn-outline-danger"><i class="fa-solid fa-heart"></i></a>
+                                   
+                                    
+                                </div>
+                            
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                Vous n'avez pas des produits dans votre liste de souhaite.
+            {% endif %}
+                        
+        </div>
+    </div>
+    
+</div>
+    </br>
+
+    
+</div>
+{% endblock %}

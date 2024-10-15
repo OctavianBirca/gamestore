@@ -33,6 +33,9 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isHomepage = null;
+
     
 
     public function getId(): ?int
@@ -111,6 +114,24 @@ class Product
 
         return $this;
     }
+
+    
+    public function isHomepage(): ?bool
+    {
+        return $this->isHomepage;
+    }
+
+    public function setHomepage(?bool $isHomepage): static
+    {
+        $this->isHomepage = $isHomepage;
+
+        return $this;
+    }
+
+    public function getHomepage(): ?bool
+    {   
+        return $this->isHomepage;
+    }   
 
     
 }

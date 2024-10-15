@@ -12,7 +12,9 @@
         </div>
         <div class="col-md-10">
             <h5>Ma Commande No {{order.id}}</h5>
-            {{ include('admin/state.html.twig', {field : {'value' : order.state}}) }}
+            {{ include('admin/state.html.twig', {field : {'value' : order.state}}) }} 
+            
+            <a href="{{ path('app_invoice', {id_order : order.id}) }}" class="btn btn-primary btn-sm"> Facture </a>
             
             <span> Passee le {{order.createdAt|date('d/m/Y')}} </span> <br/>
             

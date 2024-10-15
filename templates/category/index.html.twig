@@ -19,7 +19,7 @@
                     <p class="card-text">product</p>
                     <a href="{{ path('app_category', { slug : product.category.slug } ) }}" class="btn btn-primary"> {{product.category.name}}</a>
                     <span class="d-block">{{product.price|priceEuro}}</span>
-                    <a href="#" class="btn btn-primary">Voir</a>
+                    <a href="{{ path ('app_product', {slug:product.slug}) }}" class="btn btn-primary">Voir</a>
                 </div>
             </div>
 
