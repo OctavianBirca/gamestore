@@ -23,13 +23,13 @@ class Order
     #[ORM\Column]
     private ?int $state = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $carrier = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'float', nullable: true)]
     private ?float $carrierPrice = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT,  nullable: true)]
     private ?string $delivery = null;
 
     /**
@@ -44,6 +44,24 @@ class Order
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $stripe_session_id = null;
+
+
+    /* 
+    * Shop atributes
+    */
+
+    #[ORM\ManyToOne(targetEntity: Shop::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Shop $shop = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $pickupDate = null;
+
+
+    /*
+    * Methods
+    */
+
 
     public function __construct()
     {
@@ -186,4 +204,28 @@ class Order
 
         return $this;
     }
+
+    public function getShop(): ?Shop
+    {
+        return $this->shop;
+    }
+
+    public function setShop(?Shop $shop): static
+    {
+        $this->shop = $shop;
+        return $this;
+    }
+
+    public function getPickupDate(): ?\DateTimeInterface
+    {
+        return $this->pickupDate;
+    }
+
+    public function setPickupDate(?\DateTimeInterface $pickupDate): static
+    {
+        $this->pickupDate = $pickupDate;
+        return $this;
+    }
+
+
 }

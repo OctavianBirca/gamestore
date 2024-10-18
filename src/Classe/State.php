@@ -25,6 +25,12 @@ class State
             'email_subject' => 'Votre commande a ete annule',
             'email_template' => 'order_state_5.html'
         ],
+        '6' => [
+            'label' => 'Reserver',
+            'email_subject' => 'Votre commande a ete Reserver',
+            'email_template' => 'order_state_6.html'
+        ],
+
     ];
 
 }

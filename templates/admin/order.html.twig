@@ -5,6 +5,7 @@
 <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
   <a href="{{current_url}}&state=5" class="btn {% if order.state == 5 %} btn-danger active {% else %} btn-outline-danger {% endif %} ">Annule</a>
   <a href="{{current_url}}&state=1" class="btn {% if order.state == 1 %} btn-warning active {% else %} btn-outline-warning {% endif %} ">En attente</a>
+  <a href="{{current_url}}&state=6" class="btn {% if order.state == 6 %} btn-light active {% else %} btn-outline-light {% endif %} ">Reserve</a>
   <a href="{{current_url}}&state=2" class="btn {% if order.state == 2 %} btn-primary active {% else %} btn-outline-primary {% endif %} ">Payee</a>
   <a href="{{current_url}}&state=3" class="btn {% if order.state == 3 %} btn-info active {% else %} btn-outline-info {% endif %} ">Expediee</a>
   <a href="{{current_url}}&state=4" class="btn {% if order.state == 4 %} btn-success active {% else %} btn-outline-success {% endif %} ">Livre</a>
@@ -26,7 +27,13 @@
     </div>
     <div class="col-md-6 bg-light">
         <h4>Shop</h4>
-        {{order.carrier}}
+        {% if order.carrier %}
+                
+          {{order.carrier}}
+                 
+        {% else %}
+          {{order.shop}}
+        {% endif %}
     </div>
 </div>
 

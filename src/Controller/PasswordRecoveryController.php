@@ -74,7 +74,7 @@ class PasswordRecoveryController extends AbstractController
     public function reset(Request $request, UserRepository $userRepository, $token): Response
     {
         if (!$token) {
-            dd('token does not exist');
+            #dd('token does not exist');
             return $this->redirectToRoute('app_password');
         } 
         
@@ -85,7 +85,7 @@ class PasswordRecoveryController extends AbstractController
         
 
         if (!$user || $user->getTokenExpireAt() < $now) {
-            dd('token expired ');
+            #dd('token expired ');
             return $this->redirectToRoute('app_password');
         } 
         

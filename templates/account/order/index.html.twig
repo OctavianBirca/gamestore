@@ -3,7 +3,7 @@
 
 {% block body %}
 
-
+{{ dump() }}
 
 <div class="container my-5">
     <div class="row">
@@ -27,7 +27,14 @@
                 </div>
                 <div class="col-md-6 bg-light">
                     <h4>Shop</h4>
-                    {{order.carrier}}
+                    {% if order.carrier %}
+                    
+                     {{order.carrier}}
+                    
+                    {% else %}
+                     {{order.shop}}
+                    {% endif %}
+
                 </div>
             </div>
 

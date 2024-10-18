@@ -16,6 +16,18 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+
+    public function findOneBySlugWithProducts(string $slug)
+{
+    return $this->createQueryBuilder('c')
+        ->leftJoin('c.products', 'p')
+        ->addSelect('p')
+        ->where('c.slug = :slug')
+        ->setParameter('slug', $slug)
+        ->getQuery()
+        ->getOneOrNullResult();
+}
+
     //    /**
     //     * @return Category[] Returns an array of Category objects
     //     */
@@ -40,4 +52,8 @@ class CategoryRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+
+
+
 }
