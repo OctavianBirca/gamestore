@@ -13,7 +13,9 @@
 
         <div class="col-md-9">
             <div class="btn-group">
-                <a href="{{ path('app_category', { slug : product.category.slug } ) }}" class="btn btn-primary" > {{product.category.name}}</a>
+                {% for category in product.categories %}
+                    <a href="{{ path('app_category', { slug : category.slug } ) }}" class="btn btn-primary">{{ category.name }}</a>
+                 {% endfor %}
                 <a href="" class="btn btn-primary active" aria-current="page"> {{product.name}} </a>
             </div>
             

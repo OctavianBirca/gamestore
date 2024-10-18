@@ -17,7 +17,7 @@ class HomeController extends AbstractController
         $orders = $orderRepository->findBy([
             'user' => $this->getUser(),
             # shows the orders by their status
-            'state' => [1,2,3]
+            'state' => [1,2,3,4,5,6]
         ]);
 
         

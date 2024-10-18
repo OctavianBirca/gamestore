@@ -47,7 +47,7 @@ class ProductCrudController extends AbstractCrudController
                 ->setLabel('Titre')
                 ->setHelp('Titre du produits'),
             BooleanField::new('homepage')
-                ->setLabel("Afficher sur la page d'accueil"),
+                ->setLabel("Accueil"),
             SlugField::new('slug')
                 ->setLabel('slug - url')
                 ->setTargetFieldName('name')
@@ -61,7 +61,25 @@ class ProductCrudController extends AbstractCrudController
                 ->setUploadDir('/public/uploads')
                 ->setRequired($imageRequierd),
             NumberField::new('price')->setLabel('Prix')->setHelp('Prix en Euro'),
-            AssociationField::new('category', 'Categorie associe')
+           
+            AssociationField::new('categories')
+            ->setLabel('Catégories')
+            ->setHelp('Sélectionnez une ou plusieurs catégories')
+            ->setFormTypeOptions([
+                'by_reference' => false,
+                'multiple' => true,
+            ]),
+            
+            ChoiceField::new('pegi')
+                ->setLabel('PEGI')
+                ->setChoices([
+                    '3' => 3,
+                    '7' => 7,
+                    '12' => 12,
+                    '16' => 16,
+                    '18' => 18,
+            ])
+                ->setHelp('Sélectionnez le PEGI approprié pour le produit'),
         ];
     }
     

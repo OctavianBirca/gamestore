@@ -12,11 +12,18 @@ class CategoryController extends AbstractController
     #[Route('/categorie/{slug}', name: 'app_category')]
     public function index($slug, CategoryRepository $categoryRepository): Response
     {
-        $category = $categoryRepository->findOneBySlug($slug);
+        $category = $categoryRepository->findOneBySlugWithProducts($slug);
+        
        
+
+        // Verificăm dacă categoria a fost găsită
+        if (!$category) {
+            throw $this->createNotFoundException('Categoria nu a fost găsită.');
+        }
         
         return $this->render('category/index.html.twig', [
             'category' => $category,
+            
         ]);
     }
 }

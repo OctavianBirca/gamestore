@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,14 +31,33 @@ class Product
     #[ORM\Column]
     private ?float $price = null;
 
+
+    /* 
+    *Many To One Categories
+     
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
+    */   
+
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products')]
+    #[ORM\JoinTable(name: 'product_category')]
+    private Collection $categories;
+
+
     #[ORM\Column(nullable: true)]
     private ?bool $isHomepage = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $pegi = null;
+
     
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -103,9 +124,9 @@ class Product
         return $this;
     }
 
-    public function getCategory(): ?Category
+    public function getCategories(): Collection
     {
-        return $this->category;
+        return $this->categories;
     }
 
     public function setCategory(?Category $category): static
@@ -115,7 +136,23 @@ class Product
         return $this;
     }
 
-    
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+
     public function isHomepage(): ?bool
     {
         return $this->isHomepage;
@@ -131,6 +168,18 @@ class Product
     public function getHomepage(): ?bool
     {   
         return $this->isHomepage;
+    }
+
+    public function getPegi(): ?int
+    {
+        return $this->pegi;
+    }
+
+    public function setPegi(?int $pegi): static
+    {
+        $this->pegi = $pegi;
+
+        return $this;
     }   
 
     

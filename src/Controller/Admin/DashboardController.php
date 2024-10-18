@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Header;
 use App\Entity\Order;
 use App\Entity\Product;
+use App\Entity\Shop;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -53,5 +54,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Transporter', 'fas fa-list', Carrier::class);
         yield MenuItem::linkToCrud('Commande', 'fas fa-list', Order::class);
         yield MenuItem::linkToCrud('Header', 'fas fa-list', Header::class);
+        yield MenuItem::linkToCrud('Shop', 'fas fa-list', Shop::class);
     }
 }
