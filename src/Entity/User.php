@@ -82,6 +82,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $tokenExpireAt = null;
 
+
+    private ?string $plainPassword = null;
+
+
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
@@ -287,4 +292,17 @@ public function setLastname(string $lastname): static
 
         return $this;
     }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): static
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
 }

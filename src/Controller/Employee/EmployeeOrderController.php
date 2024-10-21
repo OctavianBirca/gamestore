@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Employee;
 
 use App\Classe\Mail;
 use App\Classe\State;
@@ -20,7 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 
-class OrderCrudController extends AbstractCrudController
+class EmployeeOrderController extends AbstractCrudController
 {
     private $em;
 
@@ -50,7 +50,9 @@ class OrderCrudController extends AbstractCrudController
     {
         $show = Action::new ('Afficher')->linkToCrudAction('show');
         return $actions
-            ->add(Crud::PAGE_INDEX, $show);
+            ->add(Crud::PAGE_INDEX, $show)
+            ->remove(Crud::PAGE_INDEX, Action::EDIT)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE);
     }
 
      // changing the state of the order 
@@ -86,7 +88,7 @@ class OrderCrudController extends AbstractCrudController
             $this->changeState($order, $request->get('state'));
         }
         
-        return $this->render('admin/order.html.twig', [
+        return $this->render('employee/order.html.twig', [
             'order' => $order,
             'current_url' => $url
         ]);
