@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  web:
+    image: php:8.2-apache
+    container_name: gamestore-web
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+      - mongodb
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: bash -c "docker-php-ext-install pdo pdo_mysql && pecl install mongodb && docker-php-ext-enable mongodb && apache2-foreground"
+
+  db:
+    image: mysql:8
+    container_name: gamestore-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gamestore
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  mongodb:
+    image: mongo:5.0
+    container_name: gamestore-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  db_data:
+  mongodb_data:

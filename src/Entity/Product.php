@@ -52,10 +52,14 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?int $pegi = null;
 
+    #[ORM\Column]
+    private ?int $stock = null;
+
     
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->stock = 0;
     }
 
 
@@ -180,7 +184,35 @@ class Product
         $this->pegi = $pegi;
 
         return $this;
-    }   
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(int $stock): static
+    {
+        $this->stock = $stock;
+
+        return $this;
+    } 
+    
+    public function increaseStock(int $quantity): static
+    {
+        $this->stock += $quantity;
+
+        return $this;
+    }
+
+    public function decreaseStock(int $quantity): static
+    {
+        if ($this->stock >= $quantity) {
+            $this->stock -= $quantity;
+        }
+
+        return $this;
+    }
 
     
 }

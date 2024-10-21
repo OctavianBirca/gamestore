@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class ProductCrudController extends AbstractCrudController
 {
@@ -61,15 +62,13 @@ class ProductCrudController extends AbstractCrudController
                 ->setUploadDir('/public/uploads')
                 ->setRequired($imageRequierd),
             NumberField::new('price')->setLabel('Prix')->setHelp('Prix en Euro'),
-           
             AssociationField::new('categories')
-            ->setLabel('Catégories')
-            ->setHelp('Sélectionnez une ou plusieurs catégories')
-            ->setFormTypeOptions([
-                'by_reference' => false,
-                'multiple' => true,
+                ->setLabel('Catégories')
+                ->setHelp('Sélectionnez une ou plusieurs catégories')
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                    'multiple' => true,
             ]),
-            
             ChoiceField::new('pegi')
                 ->setLabel('PEGI')
                 ->setChoices([
@@ -80,7 +79,10 @@ class ProductCrudController extends AbstractCrudController
                     '18' => 18,
             ])
                 ->setHelp('Sélectionnez le PEGI approprié pour le produit'),
+            NumberField::new('stock')->setLabel('Stock')
         ];
+
+            
     }
     
 }
