@@ -10,7 +10,7 @@ class SalesService
 
     public function __construct()
     {
-       
+        
         $mongodbUrl = $_ENV['MONGODB_URL'] ?? null;
 
         if (!$mongodbUrl) {

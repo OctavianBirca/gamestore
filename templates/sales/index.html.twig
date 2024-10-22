@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sales Overview{% endblock %}
+
+{% block body %}
+<h1>Sales Overview</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Store</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sale in sales %}
+            <tr>
+                <td>{{ sale.productName }}</td>
+                <td>{{ sale.price }}</td>
+                <td>{{ sale.store }}</td>
+                <td>{{ sale.date }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
