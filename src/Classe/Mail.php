@@ -1,39 +1,53 @@
 <?php
 
-namespace App\Service;
+namespace App\Classe;
 
-use MongoDB\Client;
 
-class SalesService
+use Mailjet\Client;
+use Mailjet\Resources;
+
+class Mail 
 {
-    private $mongoClient;
-
-    public function __construct()
+    public function send($to_email, $to_name, $subject, $template, $vars = null) 
     {
+        $content = file_get_contents(dirname(__DIR__).'/Mail/'.$template);
+
+        if($vars) {
+            foreach($vars as $key=>$var) {
+                $content = str_replace('{'.$key.'}', $var, $content);
+            }   
+        } 
+
+        $mj = new Client ($_ENV['MJ_APIKEY_PUBLIC'], $_ENV['MJ_APIKEY_PRIVATE'],true,['version' => 'v3.1']);
+
        
-        $mongodbUrl = $_ENV['MONGODB_URL'] ?? null;
+        $body = [
+            'Messages' => [
+                [
+                    'From' => [
+                        'Email' => "octavian.birca.2@gmail.com",
+                        'Name' => "GameStore"
+                    ],
+                    'To' => [
+                        [
+                            'Email' => $to_email,
+                            'Name' => $to_name
+                        ]
+                    ],
+                    'TemplateID' => 6348362,
+                    'TemplateLanguage' => true,
+                    'Subject' => $subject,
+                    'Variables' => [
+                        'content' => $content
+                    ]
+                ]
+            ]
+        ];
 
-        if (!$mongodbUrl) {
-            throw new \RuntimeException('The MongoDB URL is not set in the environment variables.');
-        }
+        $mj->post(Resources::$Email, ['body' => $body, 'verify' => false]);
 
-        $this->mongoClient = new Client($mongodbUrl);
+
+        
     }
 
-    public function addSale(string $productName, float $price, string $store, \DateTime $date): void
-    {
-        $collection = $this->mongoClient->gamestore->sales;
-        $collection->insertOne([
-            'productName' => $productName,
-            'price' => $price,
-            'store' => $store,
-            'date' => $date->format('Y-m-d H:i:s'),
-        ]);
-    }
-
-    public function getSales(array $filters = []): array
-    {
-        $collection = $this->mongoClient->gamestore->sales;
-        return $collection->find($filters)->toArray();
-    }
 }
