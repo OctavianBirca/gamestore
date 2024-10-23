@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Classe\Mail;
+use App\Classe\SalesService;
 use App\Classe\State;
 use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,9 +25,12 @@ class OrderCrudController extends AbstractCrudController
 {
     private $em;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface)
+    private $salesService;
+
+    public function __construct(EntityManagerInterface $entityManagerInterface, SalesService $salesService)
     {
         $this->em = $entityManagerInterface;
+        $this->salesService = $salesService;
     }
     
     
@@ -69,8 +73,29 @@ class OrderCrudController extends AbstractCrudController
             'id_order' => $order->getId()
         ];
         $mail->send($order->getUser()->getEmail(), $order->getUser()->getFirstname().' '.$order->getUser()->getLastname(), State::STATE[$state]['email_subject'], State::STATE[$state]['email_template'], $vars);
-
-    }
+        
+        
+        $orderDetails = $order->getOrderDetails();
+        
+        
+        if ($order->getState() === 4) { 
+            foreach ($orderDetails as $product) {
+                try {
+                    $this->salesService->recordSale(
+                        $product->getProductName(),
+                        $product->getProductPrice(),
+                        (new \DateTime())->format('d-m-Y H:i:s'),
+                        $order->getShop()->getName(),
+                        $product->getProductQuantity()
+                    );
+                } catch (\Exception $e) {
+                   dump('Error inserting sale: ' . $e->getMessage());
+                }
+            }
+                
+        }
+    }    
+     
 
 
 

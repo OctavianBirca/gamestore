@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Classe\SalesService;
 use App\Entity\Carrier;
 use App\Entity\Category;
 use App\Entity\Header;
@@ -25,7 +26,7 @@ class DashboardController extends AbstractDashboardController
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
          $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        return $this->redirect($adminUrlGenerator->setController(UserCrudController::class)->generateUrl());
+        return $this->redirect($adminUrlGenerator->setController(OrderCrudController::class)->generateUrl());
 
         // Option 2. You can make your dashboard redirect to different pages depending on the user
         //
@@ -52,9 +53,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Categories', 'fas fa-list', Category::class);
         yield MenuItem::linkToCrud('Produits', 'fas fa-list', Product::class);
         yield MenuItem::linkToCrud('Transporter', 'fas fa-list', Carrier::class);
-        yield MenuItem::linkToCrud('Commande', 'fas fa-list', Order::class);
+        yield MenuItem::linkToCrud('Commande', 'fas fa-list', Order::class) ->setController(OrderCrudController::class);
         yield MenuItem::linkToCrud('Header', 'fas fa-list', Header::class);
         yield MenuItem::linkToCrud('Shop', 'fas fa-list', Shop::class);
+        yield MenuItem::linkToRoute('Sales', 'fas fa-list', 'sales_overview');
     }
 
 

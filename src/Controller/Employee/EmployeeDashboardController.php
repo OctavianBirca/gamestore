@@ -29,7 +29,7 @@ class EmployeeDashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Commandes', 'fa fa-box', Order::class);
+        yield MenuItem::linkToCrud('Commandes', 'fa fa-box', Order::class)->setController(EmployeeOrderController::class);
         
     }
 }

@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sales Report{% endblock %}
+
+{% block body %}
+    <h1>Sales Report</h1>
+    
+    <div>
+        <label for="filterDate">Filter by Date: </label>
+        <input type="date" id="filterDate" onchange="filterSales()">
+    </div>
+
+    <canvas id="salesChart" width="800" height="400"></canvas>
+
+    <h2>Sales Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Product Name</th>
+                <th>Store</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody id="salesDetails">
+            {% for sale in sales %}
+                <tr>
+                    <td>{{ sale.saleDate }}</td>
+                    <td>{{ sale.productName }}</td>
+                    <td>{{ sale.store }}</td>
+                    <td>{{ sale.quantity }}</td>
+                    <td>{{ sale.price * sale.quantity }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const salesData = {{ sales|json_encode|raw }};
+        
+        function renderChart(data) {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            const chartData = {
+                labels: data.map(sale => sale.saleDate),
+                datasets: [{
+                    label: 'Total Sales',
+                    data: data.map(sale => sale.price * sale.quantity),
+                    borderWidth: 1,
+                }]
+            };
+
+            new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function filterSales() {
+            const filterDate = document.getElementById("filterDate").value;
+            const filteredData = salesData.filter(sale => sale.saleDate.startsWith(filterDate));
+            renderChart(filteredData);
+        }
+
+        // Render the initial chart with all data
+        renderChart(salesData);
+    </script>
+{% endblock %}
