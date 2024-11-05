@@ -1,0 +1,199 @@
+{# templates/admin/sales/index.html.twig #}
+{% extends '@!EasyAdmin/page/content.html.twig' %}
+
+{% block head_javascript %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block page_title %}Aperçu des ventes{% endblock %}
+
+{% block main %}
+    {# Filters Section #}
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row align-items-end">
+                {# Păstrăm parametrii EasyAdmin #}
+                <input type="hidden" name="menuIndex" value="{{ app.request.query.get('menuIndex') }}">
+                <input type="hidden" name="submenuIndex" value="{{ app.request.query.get('submenuIndex') }}">
+                <input type="hidden" name="crudAction" value="index">
+                <input type="hidden" name="crudControllerFqcn" value="App\Controller\Admin\SalesController">
+
+                <div class="col-md-4">
+                    <label class="form-label">Date début</label>
+                    <input type="date" name="startDate" class="form-control" value="{{ startDate }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Date fin</label>
+                    <input type="date" name="endDate" class="form-control" value="{{ endDate }}">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">Filtrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {# Sales Chart #}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Graphique des ventes</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="salesChart" height="300"></canvas>
+        </div>
+    </div>
+
+    {# Store Summary #}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Résumé par magasin</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Magasin</th>
+                            <th>Total des ventes</th>
+                            <th>Quantité totale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for summary in storeSummary %}
+                            <tr>
+                                <td>{{ summary._id }}</td>
+                                <td>€{{ summary.totalSales|number_format(2, ',', ' ') }}</td>
+                                <td>{{ summary.totalQuantity }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {# Sales Table #}
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Détail des ventes</h5>
+            <input type="text" id="salesSearch" class="form-control w-auto" placeholder="Rechercher...">
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped" id="salesTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Produit</th>
+                            <th>Prix</th>
+                            <th>Date</th>
+                            <th>Quantité</th>
+                            <th>Magasin</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in sales %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ sale.productName }}</td>
+                            <td>€{{ sale.price|number_format(2, ',', ' ') }}</td>
+                            <td>{{ sale.saleDate|date('d/m/Y H:i') }}</td>
+                            <td>{{ sale.quantity }}</td>
+                            <td>{{ sale.store }}</td>
+                            <td>€{{ (sale.price * sale.quantity)|number_format(2, ',', ' ') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup Chart
+            const salesData = {{ sales|json_encode|raw }};
+            setupSalesChart(salesData);
+
+            // Setup Search
+            const searchInput = document.getElementById('salesSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const tableRows = document.querySelectorAll('#salesTable tbody tr');
+
+                    tableRows.forEach(row => {
+                        const productName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                        const store = row.querySelector('td:nth-child(6)').textContent.toLowerCase();
+                        row.style.display = 
+                            productName.includes(searchTerm) || store.includes(searchTerm) 
+                            ? '' 
+                            : 'none';
+                    });
+                });
+            }
+
+            function setupSalesChart(data) {
+                const ctx = document.getElementById('salesChart').getContext('2d');
+                const groupedData = groupSalesByDate(data);
+                
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(groupedData),
+                        datasets: [{
+                            label: 'Ventes totales par jour (€)',
+                            data: Object.values(groupedData),
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value.toLocaleString('fr-FR') + '€' ;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function groupSalesByDate(sales) {
+                const grouped = {};
+                
+                // Group sales by date
+                sales.forEach(sale => {
+                    const date = sale.saleDate.split(' ')[0];
+                    if (!grouped[date]) {
+                        grouped[date] = 0;
+                    }
+                    grouped[date] += sale.price * sale.quantity;
+                });
+
+                // Sort dates
+                const sortedDates = Object.keys(grouped).sort((a, b) => new Date(a) - new Date(b));
+                const sortedData = {};
+                
+                // new object with sorted dates
+                sortedDates.forEach(date => {
+                    sortedData[date] = grouped[date];
+                });
+
+                return sortedData;
+            }
+        });
+    </script>
+{% endblock %}

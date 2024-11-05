@@ -84,7 +84,7 @@ class OrderCrudController extends AbstractCrudController
                     $this->salesService->recordSale(
                         $product->getProductName(),
                         $product->getProductPrice(),
-                        (new \DateTime())->format('d-m-Y H:i:s'),
+                        (new \DateTime())->format('Y-m-d H:i:s'),
                         $order->getShop()->getName(),
                         $product->getProductQuantity()
                     );

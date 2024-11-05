@@ -1,9 +1,6 @@
 <?php
 
-
-
 namespace App\Classe;
-require_once __DIR__ . '/../../vendor/autoload.php';
 
 use MongoDB\Client;
 use MongoDB\Collection;
@@ -14,45 +11,87 @@ class SalesService
 
     public function __construct()
     {
-        $mongoUrl = "mongodb://127.0.0.1:27017/gamestore-mdb";
+        // Timeout for execution
+        ini_set('max_execution_time', 300);
         
+        // MongoDB connection options
+        $options = [
+            'connectTimeoutMS' => 60000,
+            'socketTimeoutMS' => 60000,
+            'serverSelectionTimeoutMS' => 60000
+        ];
 
-        
-       
-        $client = new Client($mongoUrl);
+        $mongoUrl = "mongodb://127.0.0.1:27017";
+        $client = new Client($mongoUrl, $options);
         $database = $client->selectDatabase('store');
         $this->collection = $database->selectCollection('sales');
     }
 
-   
-    public function recordSale(string $productName, float $price, string $saleDate, string $store, int $quantity): void
+    public function getSalesByDateRange(?string $startDate = null, ?string $endDate = null): array
+    {
+        $filter = [];
+        if ($startDate && $endDate) {
+            $filter = [
+                'saleDate' => [
+                    '$gte' => $startDate,
+                    '$lte' => $endDate
+                ]
+            ];
+        }
+
+        $options = [
+            'sort' => ['saleDate' => 1], 
+            'limit' => 1000,
+            'projection' => [
+                'productName' => 1,
+                'price' => 1,
+                'saleDate' => 1,
+                'store' => 1,
+                'quantity' => 1,
+                '_id' => 1
+            ]
+        ];
+
+        return $this->collection->find($filter, $options)->toArray();
+    }
+
+    public function getStoreSummary(): array
+    {
+        $pipeline = [
+            [
+                '$group' => [
+                    '_id' => '$store',
+                    'totalSales' => [
+                        '$sum' => [
+                            '$multiply' => ['$price', '$quantity']
+                        ]
+                    ],
+                    'totalQuantity' => ['$sum' => '$quantity']
+                ]
+            ],
+            [
+                '$sort' => ['totalSales' => -1]
+            ],
+            [
+                '$limit' => 100
+            ]
+        ];
+
+        $options = ['maxTimeMS' => 60000];
+        
+        return $this->collection->aggregate($pipeline, $options)->toArray();
+    }
+
+    public function recordSale(string $productName, float $productPrice, string $saleDate, string $storeName, int $quantity): void
     {
         $saleData = [
             'productName' => $productName,
-            'price' => $price,
+            'price' => $productPrice,
             'saleDate' => $saleDate,
-            'store' => $store,
-            'quantity' => $quantity
+            'store' => $storeName,
+            'quantity' => $quantity,
         ];
 
-        
-        
-
-        try {
-            $this->collection->insertOne($saleData);
-            dump("Successfully inserted sale to MongoDB");
-        } catch (\Exception $e) {
-            dump('Error inserting sale into MongoDB: ' . $e->getMessage());
-        }
+        $this->collection->insertOne($saleData);
     }
-
-
-    public function getAllSales(): array
-    {
-        // Fetch all sales records from MongoDB
-        return $this->collection->find()->toArray();
-    }
-
-
-
 }
