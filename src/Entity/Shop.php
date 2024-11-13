@@ -82,7 +82,7 @@ class Shop
 
     public function __toString(): string
     {
-        // Returnăm o reprezentare text a magazinului, de exemplu numele și adresa
+        // Shop name is the string representation of the object
         return $this->getName();
     }
 

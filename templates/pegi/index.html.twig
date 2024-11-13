@@ -1,0 +1,16 @@
+{% if field.value == 3 %}
+    <img src="/uploads/pegi/PEGI_3.svg" class="img-thumbnail" alt="PEGI 3">
+
+{% elseif field.value == 7 %}
+    <img src="/uploads/pegi/PEGI_7.svg" class="img-thumbnail" alt="PEGI 7">
+
+{% elseif field.value == 12 %}
+    <img src="/uploads/pegi/PEGI_12.svg" class="img-thumbnail" alt="PEGI 12"> 
+
+{% elseif field.value == 16 %}
+    <img src="/uploads/pegi/PEGI_16.svg" class="img-thumbnail" alt="PEGI 16">
+    
+{% elseif field.value == 18 %}
+    <img src="/uploads/pegi/PEGI_18.svg" class="img-thumbnail" alt="PEGI 18">
+
+{% endif %}

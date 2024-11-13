@@ -16,7 +16,7 @@ class CategoryController extends AbstractController
         
        
 
-        // Verificăm dacă categoria a fost găsită
+        // Search for the category with the given slug
         if (!$category) {
             throw $this->createNotFoundException('Categoria nu a fost găsită.');
         }
