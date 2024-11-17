@@ -11,17 +11,7 @@
     <div class="row">
                 
         {% for product in category.products %}
-            <div class="card col-md-4">
-                <a href="{{ path ('app_product', {slug: product.slug}) }}">
-                    <img class="card-img-top" src="/uploads/{{ product.image }}" alt="Image {{ product.name }}">
-                </a>
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text">{{ product.description }}</p>
-                    <span class="d-block">{{ product.price|priceEuro }}</span>
-                    <a href="{{ path ('app_product', {slug: product.slug}) }}" class="btn btn-primary">Voir</a>
-                </div>
-            </div>
+           {% include 'product/card.index.twig' %}
         {% else %}
             <p>Aucun produit disponible pour cette catégorie.</p>
         {% endfor %} 

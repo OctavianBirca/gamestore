@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les Jeux{% endblock %}
+
+{% block body %}
+
+<div class="container my-5">
+    <h1 class="text-center mb-5">Tous les Jeux</h1>
+    
+
+    <div class="d-flex justify-content-end mb-4">
+
+        <!-- Dropdown for categories -->
+        <div class="dropdown me-2">
+            <button class="btn btn-secondary dropdown-toggle " type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Categories
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                <li><a class="dropdown-item filter-option" data-filter="all">Tous</a></li>
+                {% for category in allCategories %}
+                    <li><a class="dropdown-item filter-option" data-filter="{{category.name}}">{{category.name}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- Dropdown for PEGI -->
+        <div class="dropdown me-2">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="pegiDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                PEGI
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="pegiDropdown">
+                <li><a class="dropdown-item pegi-option" data-filter="all">Tous</a></li>
+                <li><a class="dropdown-item pegi-option" data-filter="3">3</a></li>
+                <li><a class="dropdown-item pegi-option" data-filter="7">7</a></li>
+                <li><a class="dropdown-item pegi-option" data-filter="12">12</a></li>
+                <li><a class="dropdown-item pegi-option" data-filter="16">16</a></li>
+                <li><a class="dropdown-item pegi-option" data-filter="18">18</a></li>
+            </ul>
+            </div>
+        <!-- Dropdown for Price -->
+        <div class="dropdown me-2">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="priceDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Prix
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="priceDropdown">
+                <li><a class="dropdown-item price-option" data-sort="asc">Ascendent</a></li>
+                <li><a class="dropdown-item price-option" data-sort="desc">Descendent</a></li>
+            </ul>
+        </div>
+        <button id="resetFilter" class="btn btn-outline-danger"><i class="bi bi-x-circle-fill"></i></button>
+    </div>
+    
+    <!-- All games -->
+    <div class="row g-4" id="gamesContainer">
+        {% for product in allProducts %}
+            {% include 'product/card.index.twig' %}
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const filterOptions = document.querySelectorAll(".filter-option");
+        const pegiOptions = document.querySelectorAll(".pegi-option");
+        const priceOptions = document.querySelectorAll(".price-option");
+        const cards = document.querySelectorAll("[data-category]");
+        const dropdownButton = document.getElementById("categoryDropdown");
+        const pegiDropdownButton = document.getElementById("pegiDropdown");
+        const priceDropdownButton = document.getElementById("priceDropdown");
+        const resetButton = document.getElementById("resetFilter");
+
+        let currentCategoryFilter = "all";
+        let currentPegiFilter = "all";
+        let currentSortOrder = null;
+
+        // filtre and sort
+        function applyFilters() {
+            const sortedCards = Array.from(cards);
+
+            // sort by price
+            if (currentSortOrder) {
+                sortedCards.sort((a, b) => {
+                    const priceA = parseFloat(a.getAttribute("data-price"));
+                    const priceB = parseFloat(b.getAttribute("data-price"));
+
+                    return currentSortOrder === "asc" ? priceA - priceB : priceB - priceA;
+                });
+            }
+
+            // filter by category and pegi
+            sortedCards.forEach(card => {
+                const categories = card.getAttribute("data-category").split(", ");
+                const pegi = card.getAttribute("data-pegi");
+
+                const categoryMatch = (currentCategoryFilter === "all" || categories.includes(currentCategoryFilter));
+                const pegiMatch = (currentPegiFilter === "all" || pegi === currentPegiFilter);
+
+                if (categoryMatch && pegiMatch) {
+                    card.style.display = "block";
+                    card.parentElement.appendChild(card); // re-append to the parent to keep the order
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        // filter by category
+        filterOptions.forEach(option => {
+            option.addEventListener("click", () => {
+                currentCategoryFilter = option.getAttribute("data-filter");
+                dropdownButton.textContent = option.textContent;
+                applyFilters();
+            });
+        });
+
+        // filter by pegi
+        pegiOptions.forEach(option => {
+            option.addEventListener("click", () => {
+                currentPegiFilter = option.getAttribute("data-filter");
+                pegiDropdownButton.textContent = option.textContent;
+                applyFilters();
+            });
+        });
+
+        // filter by price
+        priceOptions.forEach(option => {
+            option.addEventListener("click", () => {
+                currentSortOrder = option.getAttribute("data-sort");
+                priceDropdownButton.textContent = option.textContent;
+                applyFilters();
+            });
+        });
+
+        // reset filters
+        resetButton.addEventListener("click", () => {
+            currentCategoryFilter = "all";
+            currentPegiFilter = "all";
+            currentSortOrder = null;
+            dropdownButton.textContent = "Categories";
+            pegiDropdownButton.textContent = "PEGI";
+            priceDropdownButton.textContent = "Prix";
+            applyFilters();
+        });
+    });
+</script>
+
+
+
+{% endblock %}

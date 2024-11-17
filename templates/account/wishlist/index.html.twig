@@ -16,30 +16,7 @@
             {% if app.user.wishlists|length > 0 %}
                 <div class="row">
                     {% for product in app.user.wishlists %}
-                        <div class="card col-md-4" >
-                            <a href="{{ path ('app_product', {slug:product.slug}) }}">
-                                <img class="card-img-top" src="/uploads/{{ product.image }}" alt="Image {{product.name}}">
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">{{product.name}}</h5>
-                                <p class="card-text">product</p>
-                                <div class="btn-group">
-                                    {% for category in product.categories %}
-                                        <a href="{{ path('app_category', { slug : category.slug } ) }}" class="btn btn-primary">{{ category.name }}</a>
-                                    {% endfor %}
-                                        <a href="" class="btn btn-primary active" aria-current="page"> {{product.name}} </a>
-                                </div>
-                                <span class="d-block">{{product.price|priceEuro}}</span>
-                            
-                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic outlined button group">
-                                    <a href="{{ path ('app_product', {slug:product.slug}) }}" type="button" class="btn btn-outline-primary"><i class="fa-solid fa-eye"></i></a>
-                                    <a href="{{ path ('app_product', {slug:product.slug}) }}" type="button" class="btn btn-outline-primary"><i class="fa-solid fa-cart-shopping"></i></a>
-                                    <a href="{{ path ('app_account_wishlist_remove', {id :product.id}) }}" type="button" class="btn btn-outline-danger"><i class="bi bi-bag-heart"></i></a>
-                                    
-                                </div>
-                            
-                            </div>
-                        </div>
+                        {% include 'product/card.index.twig' %}
                     {% endfor %}
                 </div>
             {% else %}

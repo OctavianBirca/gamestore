@@ -3,94 +3,87 @@
 
 {% block body %}
 
-{{ dump() }}
 
 <div class="container my-5">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3">
             {% include 'account/_menu.html.twig' %}
         </div>
-        <div class="col-md-10">
-            <h5>Ma Commande No {{order.id}}</h5>
-            {{ include('admin/state.html.twig', {field : {'value' : order.state}}) }} 
-            
-            <a href="{{ path('app_invoice', {id_order : order.id}) }}" class="btn btn-primary btn-sm"> Facture </a>
-            
-            <span> Passee le {{order.createdAt|date('d/m/Y')}} </span> <br/>
-            
-            <hr>
-
-            <div class="row mt-3">
-                <div class="col-md-6 bg-light ml-2">
-                    <h4>Adresse</h4>
-                    {{ order.delivery|raw}}
+        <div class="col-md-9">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Ma Commande No {{ order.id }}</h5>
+                    <div>
+                        {{ include('admin/state.html.twig', {field : {'value' : order.state}}) }}
+                        <a href="{{ path('app_invoice', {id_order : order.id}) }}" class="btn btn-light btn-sm ms-2">Facture</a>
+                    </div>
                 </div>
-                <div class="col-md-6 bg-light">
-                    <h4>Shop</h4>
-                    {% if order.carrier %}
-                    
-                     {{order.carrier}}
-                    
-                    {% else %}
-                     {{order.shop}}
-                    {% endif %}
-
-                </div>
-            </div>
-
-      
-             <hr>
-                
-            
-
-
-                <table class="table table-striped">
-                <thead>
-                    <tr>
-                    <th scope="col">Produit</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Prix</th>
-                    <th scope="col">Quantite</th>
-                    <th scope="col">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% set totalQuantity = 0 %}
-                {% set totalPrice = 0 %}
-                    {% for product in order.orderDetails %}
-                    <tr>
-                        
-                    <td>{{product.productName}}</th>
-                    <td><img src="/uploads/{{ product.productImage }}" alt="{{ product.productName }}" style="max-width: 100px;"/></td>
-                    <td>{{product.productPrice|priceEuro}}</th>
-                    {% set totalPrice = totalPrice + product.productPrice %}
-                    <td>{{product.productQuantity}}</th>
-                    {% set totalQuantity = totalQuantity + product.productQuantity %}
-                    <td>{{(product.productQuantity * product.productPrice)|priceEuro}}</th>
-                        
-                    </tr>
-                    {% endfor %}
-
-                    <tr>
-                    <td colspan="4">{{order.carrier}}</td>
-                    <td>{{order.carrierPrice|priceEuro}}</td>
-                    </tr>
-
-                    
-                    <tr>
-                    <th scope="col">Total</th>
-                    <th scope="col"></th>
-                    <th scope="col">{{totalPrice|priceEuro}}</th>
-                    <th scope="col">{{totalQuantity}}</th>
-                    <th scope="col">{{(totalPrice + order.carrierPrice)|priceEuro}}</th>
-                    </tr>
-                    
-                </tbody>
-                </table>
-
-                
+                <div class="card-body">
+                    <p class="text-muted">Passée le {{ order.createdAt|date('d/m/Y') }}</p>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card border-light mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Adresse</h5>
+                                    <p class="card-text">{{ order.delivery|raw }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-light mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Shop</h5>
+                                    <p class="card-text">
+                                        {% if order.carrier %}
+                                            {{ order.carrier }}
+                                        {% else %}
+                                            {{ order.shop }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Produit</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Prix</th>
+                                <th scope="col">Quantité</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set totalQuantity = 0 %}
+                            {% set totalPrice = 0 %}
+                            {% for product in order.orderDetails %}
+                                <tr>
+                                    <td>{{ product.productName }}</td>
+                                    <td><img src="/uploads/{{ product.productImage }}" alt="{{ product.productName }}" class="img-thumbnail" style="max-width: 100px;" /></td>
+                                    <td>{{ product.productPrice|priceEuro }}</td>
+                                    <td>{{ product.productQuantity }}</td>
+                                    <td>{{ (product.productQuantity * product.productPrice)|priceEuro }}</td>
+                                    {% set totalQuantity = totalQuantity + product.productQuantity %}
+                                    {% set totalPrice = totalPrice + (product.productQuantity * product.productPrice) %}
+                                </tr>
+                            {% endfor %}
+                            <tr class="table-light">
+                                <td colspan="4" class="text-end">{{ order.carrier }}</td>
+                                <td>{{ order.carrierPrice|priceEuro }}</td>
+                            </tr>
+                            <tr class="fw-bold">
+                                <td colspan="2"></td>
+                                <td>Total : {{ totalPrice|priceEuro }}</td>
+                                <td>Total Quantité : {{ totalQuantity }}</td>
+                                <td>Total Final : {{ (totalPrice + order.carrierPrice)|priceEuro }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            
         </div>
+    </div>
+</div>
 {% endblock %}

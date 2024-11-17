@@ -4,6 +4,7 @@
 {% block body %}
 
 
+
 <div class="container my-5">
     <div class="row">
         <div class="col-md-2">
@@ -11,40 +12,38 @@
         </div>
         <div class="col-md-10">
             {% if orders|length == 0 %}
-                <div class="alert alert-info">
+                <div class="alert alert-info text-center">
                     Vous n'avez aucun commande!
                 </div>
-
             {% else %}
-
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Statut</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">details</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for order in orders %}
-                        <tr>
-                            <th scope="row">{{order.id}}</th>
-                            <td>{{order.createdAt|date('d/m/Y')}}</td>
-                            <td>{{ include('admin/state.html.twig', {field : {'value' : order.state}}) }}</td>
-                            <td>{{order.orderPrice|priceEuro}}</td>
-                            <td><a href='{{ path('app_account_order', {'id_order' : order.id}) }}' class="btn btn-primary btn-sm">Voir</a></td>
-                        </tr>
-                    {% endfor %}
-                                      
-                    </tbody>
-                </table>
-
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle shadow-sm rounded">
+                        <thead class="table-primary text-center">
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Détails</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <th scope="row" class="text-center">{{ order.id }}</th>
+                                <td>{{ order.createdAt|date('d/m/Y') }}</td>
+                                <td class="text-center">{{ include('admin/state.html.twig', {field : {'value' : order.state}}) }}</td>
+                                <td>{{ order.orderPrice|priceEuro }}</td>
+                                <td class="text-center"><a href='{{ path('app_account_order', {'id_order' : order.id}) }}' class="btn btn-primary btn-sm"> <i class="bi bi-eye me-2"></i>Voir</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% endif %}
-
         </div>
     </div>
-    
 </div>
+
 {% endblock %}

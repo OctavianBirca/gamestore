@@ -46,86 +46,30 @@
                 <!-- Game Card Template -->
 
                 {% for product in productsInHomepage %}
-                <div class="col-md-3">
-                    <div class="card game-card h-100">
-                        <a href="{{ path('app_product', { slug : product.slug}) }}">
-                        <img src="/uploads/{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
-                         </a>
-                        <div class="pegi-badge">
-                            {{ include('pegi/index.html.twig', {field : {'value' : product.pegi}}) }}
-                            
-                        </div>
-                       
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <div class="btn-group-sm">
-                                {% for category in product.categories %}
-                                    <a href="{{ path('app_category', { slug : category.slug } ) }}" class="btn btn-primary">{{ category.name }}</a>
-                                {% endfor %}
-                                
-                            </div>
-                            <p class="card-text text-muted">{{product.description|raw}}</p>
-                            
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="h5 mb-0">{{ product.price|priceEuro }}</span>
-                                <div class="btn-group btn-group-primary" role="group" aria-label="Basic outlined button group">
-                                    <a href="{{ path ('app_product', {slug:product.slug}) }}" type="button" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
-                                    <a href="{{ path ('app_product', {slug:product.slug}) }}" type="button" class="btn btn-outline-primary"><i class="bi bi-cart-plus"></i></i></a>
-                                    {% if app.user %}
-                                        {% if product in app.user.wishlists %}
-                                            <a href="{{ path('app_account_wishlist_remove', { id : product.id }) }}"  type="button" class="btn btn-outline-danger" >
-                                                <i class="bi bi-bag-heart"></i> </i>
-                                            </a>
-                                        {% else %}
-                                            <a href="{{ path('app_account_wishlist_add', { id : product.id }) }}"  type="button" class="btn btn-outline-primary" >
-                                                <i class="bi bi-bag-heart"></i>
-                                            </a>    
-                                        {% endif %}
-                                    
-                                    {% else %}
-                                        <a data-bs-toggle="collapse" href="#collapseWishlistAlert" role="button" type="button" aria-expanded="false" aria-controls="collapseWishlistAlert-{{product.name}}" class="btn btn-outline-primary"><i class="bi bi-bag-heart"></i> </a>
-                                    {% endif %}
-                                    
-                                                                        
-                                </div>
-
-                                
-                            </div>
-                            <div class="collapse" id="collapseWishlistAlert-{{product.name}}">
-                                    <div class="card card-body">
-                                        Pour sauvgarder un produit, <a href="{{ path('app_login') }}">conectez-vous</a> ou <a href="{{ path('app_register') }}">creez votre compte</a>
-                        
-                                    </div>
-                                </div> 
-                        </div>
-                    </div>
-                </div>
+                    {% include 'product/card.index.twig' %}
                 {% endfor %}
-                <!-- Repeat for other games -->
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Cards for Categories -->
+    <section class="py-5">
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-center align-items-center">
+                {% for category in allCategories %}
+                    <a href="{{ path('app_category', {slug:category.slug}) }}" class="btn btn-primary btn-lg m-1">{{category.name}}</a>
+                {% endfor %}
             </div>
         </div>
     </section>
 
 
 
+    
+
     <div class="container marketing">
-
-        <!-- Three columns of text below the carousel -->
-        <div class="row">
-            {% for product in productsInHomepage %}
-               
-                <div class="col-lg-4">
-                    <img src="/uploads/{{ product.image }}" class="img-fluid">
-                    <h2 class="fw-normal">{{product.name}}</h2>
-                    {{product.description|raw}}
-                    <p><a class="btn btn-secondary" href="{{ path('app_product', { slug : product.slug}) }}">View details &raquo;</a></p>
-                </div>
-
-            {% endfor %}
-            
-        </div><!-- /.row -->
-
-
+     
         <!-- START THE FEATURETTES -->
 
         <hr class="featurette-divider">
@@ -169,5 +113,10 @@
         <!-- /END THE FEATURETTES -->
 
     </div>
+
+<script> 
+
+
+</script>    
 
 {% endblock %}

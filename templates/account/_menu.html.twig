@@ -1,25 +1,40 @@
 
-
-<ul class="nav flex-column">
-  <li class="nav-item small">
-    <a class="nav-link" href="{{path ('app_account') }}">Mes commandes</a>
-    <a class="nav-link" href="{{path ('app_account_wishlist') }}">Wishlist</a>
-  </li>
-   <li class="nav-item small">
-    <a class="nav-link" href="{{path ('app_account_addresses') }}">Mes adresses 1</a>
-  </li>
-  <li class="nav-item small">
-    <a class="nav-link" href="{{path ('app_account_modify_pwd') }}"><i data-feather="key"></i> Modifier le mot de passe</a>
-  </li>
-  {% if is_granted('ROLE_ADMIN') %}
-    <li class="nav-item small">
-      <a class="nav-link"  href="{{ path('admin') }}">Administration</a>
-    </li>  
-  {% endif %}
-  <li class="nav-item small">
-    <a class="nav-link" href="{{path ('_logout_main') }}"><i class="small" data-feather="log-out"></i> Deconnection</a>
-  </li>
-
-  
-  
-</ul>
+<div class="card shadow-sm">
+  <div class="card-header text-white bg-primary">
+    <h5>Mon Compte</h5>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <a class="nav-link" href="{{path ('app_account') }}">
+        <i class="bi bi-basket-fill"></i> Mes commandes
+      </a>
+    </li>
+    <li class="list-group-item">
+      <a class="nav-link" href="{{path ('app_account_wishlist') }}">
+        <i class="bi bi-heart-fill"></i> Wishlist
+      </a>
+    </li>
+    <li class="list-group-item">
+      <a class="nav-link" href="{{path ('app_account_addresses') }}">
+        <i class="bi bi-geo-alt-fill"></i> Mes adresses
+      </a>
+    </li>
+    <li class="list-group-item">
+      <a class="nav-link" href="{{path ('app_account_modify_pwd') }}">
+        <i class="bi bi-key-fill"></i> Modifier le mot de passe
+      </a>
+    </li>
+    {% if is_granted('ROLE_ADMIN') %}
+      <li class="list-group-item">
+        <a class="nav-link" href="{{ path('admin') }}">
+          <i class="bi bi-gear-fill"></i> Administration
+        </a>
+      </li>
+    {% endif %}
+    <li class="list-group-item">
+      <a class="nav-link text-danger" href="{{path ('_logout_main') }}">
+        <i class="bi bi-box-arrow-right"></i> Déconnexion
+      </a>
+    </li>
+  </ul>
+</div>
