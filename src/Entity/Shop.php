@@ -26,6 +26,18 @@ class Shop
     #[ORM\Column(length: 255)]
     private ?string $City = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $google_maps = null;
+
     
     public function getId(): ?int
     {
@@ -84,6 +96,54 @@ class Shop
     {
         // Shop name is the string representation of the object
         return $this->getName();
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getGoogleMaps(): ?string
+    {
+        return $this->google_maps;
+    }
+
+    public function setGoogleMaps(?string $google_maps): static
+    {
+        $this->google_maps = $google_maps;
+
+        return $this;
     }
 
    

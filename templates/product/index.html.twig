@@ -4,14 +4,14 @@
 
 <div class="container my-5">
     <div class="row g-4">
-        <!-- Imaginea produsului -->
+        
         <div class="col-md-4">
             <img class="img-fluid rounded shadow-sm" src="/uploads/{{ product.image }}" alt="Image {{ product.name }}">
         </div>        
 
-        <!-- Detalii produs -->
+        <!-- details -->
         <div class="col-md-8">
-            <!-- Categoriile produsului -->
+            <!-- Category -->
             <div class="mb-3">
                 <div class="btn-group">
                     {% for category in product.categories %}
@@ -23,14 +23,14 @@
                 </div>
             </div>
 
-            <!-- Titlul și descrierea produsului -->
+            <!-- title and description -->
             <h1 class="mb-3">{{ product.name }}</h1>
             <p class="text-muted">{{ product.description | raw }}</p>
 
-            <!-- Prețul produsului -->
+            <!-- price -->
             <span class="badge bg-dark display-6 py-2 px-4">{{ product.price | priceEuro }}</span>
 
-            <!-- Buton de adăugare în coș -->
+            <!-- add button -->
             <div class="mt-4">
                 <a href="{{ path('app_cart_add', { id: product.id }) }}" class="btn btn-success btn-lg">
                     <i class="fa-solid fa-cart-plus"></i> Ajouter au panier
@@ -55,7 +55,7 @@
                     </a>
                 {% endif %}
 
-                <!-- Mesaj pentru utilizatorii neconectați -->
+                <!-- message for non connected user for wishlist -->
                 <div class="collapse mt-2" id="collapseWishlistAlert">
                     <div class="alert alert-warning">
                         Pour sauvegarder un produit, <a href="{{ path('app_login') }}">connectez-vous</a> ou <a href="{{ path('app_register') }}">créez votre compte</a>.

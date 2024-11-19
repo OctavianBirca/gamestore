@@ -53,7 +53,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             {% for store in allStores %}
                                 <li>
-                                    <a class="dropdown-item" href="$"> <i class="bi bi-geo-alt-fill me-1"></i> {{store.city}}</a> 
+                                    <a class="dropdown-item" href="{{store.slug}}"> <i class="bi bi-geo-alt-fill me-1"></i> {{store.city}}</a> 
                                    
                                 </li>
                             {% endfor %}
@@ -112,8 +112,13 @@
     </div>
     {% block body %} {% endblock %}
 
-    <!-- Footer -->
-    <footer class="bg-dark text-light py-4 mt-auto">
+    
+    
+</main>
+
+<!-- Footer -->
+
+<footer class="bg-dark text-light py-4 mt-auto">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
@@ -141,7 +146,6 @@
         </div>
     </footer>
 
-</main>
 
 <script src="{{asset ('assets/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset ('assets/js/global.js')}}"></script>

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container my-5">
+    <div class="row g-4">
+        
+        <div class="col-md-4">
+            <img class="img-fluid rounded shadow-sm" src="/uploads/shops/{{ shop.image }}" alt="Image {{ shop.name }}">
+        </div>        
+
+
+        <!-- details -->
+        <div class="col-md-8">
+            
+            <!-- title and description -->
+            <h1 class="mb-3">{{ shop.name }}</h1>
+            <p class="text-muted">{{ shop.description | raw }}</p>
+
+            <!-- address -->
+            <div>
+                <h3>Adresse</h3>
+                <p>{{ shop.address}}</p>      
+                <p>{{ shop.postalCode}}, {{shop.city}} </p>         
+                </br>
+                <!-- google maps frame -->
+                <div class="container-fluid" >
+                   {{shop.googleMaps | raw}}
+                </div>
+                         
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}
