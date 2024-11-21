@@ -1,5 +1,5 @@
-<div class="col-md-3" data-category="{{ product.categories | join(', ') }}" data-pegi="{{ product.pegi }}" data-price="{{ product.price }}">
-    <div class="card game-card h-100">
+<div class="col-md-3 mb-4" data-category="{{ product.categories | join(', ') }}" data-pegi="{{ product.pegi }}" data-price="{{ product.price }}">
+    <div class="card game-card h-100 ">
         <a href="{{ path('app_product', { slug : product.slug}) }}">
         <img src="/uploads/{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
         </a>
@@ -23,7 +23,7 @@
             </div>
             
             <div class="d-flex justify-content-between align-items-center">
-                <span class="h4 mb-0">{{ product.price|priceEuro }}</span>
+                <span class="h4 mb-03">{{ product.price|priceEuro }}</span>
                 <div class="btn-group btn-group-primary" role="group" aria-label="Basic outlined button group">
                     <a href="{{ path ('app_product', {slug:product.slug}) }}" type="button" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
                     <a href="{{ path ('app_product', {slug:product.slug}) }}" type="button" class="btn btn-outline-primary"><i class="bi bi-cart-plus"></i></i></a>

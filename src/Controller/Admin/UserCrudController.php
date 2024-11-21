@@ -54,8 +54,8 @@ class UserCrudController extends AbstractCrudController
             ])->allowMultipleChoices(),
             TextField::new('plainPassword')
                 ->setLabel('Parola')
-                ->setRequired($pageName === 'new') // Este necesară la creare, dar nu la editare
-                ->onlyOnForms()// Afișează câmpul doar în formulare, nu și în listele de afișare
+                ->setRequired($pageName === 'new') // Needed when creating a new user
+                ->onlyOnForms()// Show only on forms
             ]
             ;
     }
@@ -66,7 +66,7 @@ class UserCrudController extends AbstractCrudController
             return;
         }
 
-        // Criptăm parola numai dacă este setată parola brută
+        // Crypt the password only if a plain password has been set
         if ($plainPassword = $entityInstance->getPlainPassword()) {
             $hashedPassword = $this->passwordHasher->hashPassword($entityInstance, $plainPassword);
             $entityInstance->setPassword($hashedPassword);

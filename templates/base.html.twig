@@ -20,7 +20,7 @@
 
     
 </head>
-<body>
+<body class="content d-flex flex-column vh-100">
 
 <header data-bs-theme="dark">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -53,7 +53,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             {% for store in allStores %}
                                 <li>
-                                    <a class="dropdown-item" href="{{store.slug}}"> <i class="bi bi-geo-alt-fill me-1"></i> {{store.city}}</a> 
+                                    <a class="dropdown-item" href="{{ path ('app_shop', {slug:store.slug}) }}"> <i class="bi bi-geo-alt-fill me-1"></i> {{store.city}}</a> 
                                    
                                 </li>
                             {% endfor %}
@@ -100,7 +100,7 @@
     
 </header>
 
-<main class="content d-flex flex-column vh-100">
+<main >
     <div class="container">
         {% for label, messages in app.flashes %}
             {% for message in messages %}
@@ -119,38 +119,39 @@
 <!-- Footer -->
 
 <footer class="bg-dark text-light py-4 mt-auto">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>Gamestore</h5>
-                    <p class="text">Votre boutique de jeux vidéo de confiance depuis 2024.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Nos Magasins</h5>
-                    <ul class="list-unstyled">
-                        <li>Paris</li>
-                        <li>Lille</li>
-                        <li>Nantes</li>
-                        <li>Bordeaux</li>
-                        <li>Toulouse</li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Contact</h5>
-                    <ul class="list-unstyled">
-                        <li><i class="bi bi-envelope me-2"></i>contact@gamestore.fr</li>
-                        <li><i class="bi bi-telephone me-2"></i>01 23 45 67 89</li>
-                    </ul>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Gamestore</h5>
+                <p class="text">Votre boutique de jeux vidéo de confiance depuis 2024.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Nos Magasins</h5>
+                <ul class="list-unstyled">
+                    {% for store in allStores %}
+                        <li> <a  href="{{store.slug}}"> <i class="bi bi-geo-alt-fill me-1"></i> {{store.city}}</a></li>
+                    {% endfor %}
+                    
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Contact</h5>
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-envelope me-2"></i>contact@gamestore.fr</li>
+                    <li><i class="bi bi-telephone me-2"></i>01 23 45 67 89</li>
+                </ul>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
 
+
+
+{% block javascripts %}
 <script src="{{asset ('assets/js/bootstrap.bundle.min.js')}}"></script>
-<script src="{{asset ('assets/js/global.js')}}"></script>
-
-{% block javascripts %} {% endblock %}
+<script src="{{asset ('assets/js/global.js')}}"></script> 
+{% endblock %}
 
 </body>
 </html>

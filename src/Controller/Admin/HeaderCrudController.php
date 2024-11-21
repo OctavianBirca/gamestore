@@ -33,7 +33,7 @@ class HeaderCrudController extends AbstractCrudController
             TextField::new('buttonLink', 'URL de button'),
             ImageField::new('image')
                 ->setLabel('Background')
-                ->setHelp("L'image doit avoir maximum 600x600 px" )
+                ->setHelp("L'image doit avoir maximum 1440x600 px" )
                 ->setBasePath('uploads/')
                 ->setUploadDir('/public/uploads')
                 ->setRequired($imageRequierd),
