@@ -25,7 +25,7 @@
                                 <h5 class="card-title">{{ product.object.name}}</h5>
                                 <div class="row">
                                     <div class="col-4 card-text text-end">Price: {{product.object.price|priceEuro}}</div>
-                                    <p class="col-3 card-text text-end"><a href="{{ path('app_cart_decrease',{id:product.object.id})}}" >-<a/> x{{product.qty}} <a href="{{ path('app_cart_add',{id:product.object.id})}}" >+<a/></p>
+                                    <p class="col-3 card-text text-end"><a href="{{ path('app_cart_decrease',{id:product.object.id})}}" >-<a/> x{{product.qty}} <a href="{{ path('app_cart_add',{id:product.object.id})}}" class="add-to-cart-button" >+<a/></p>
                                     <p class="col-3 card-text text-end"><strong>Total: {{(product.qty * product.object.price) |priceEuro }} </strong></p>
                                 </div>
                             </div>
@@ -59,4 +59,41 @@
     </div>
     
 </div>
+
+<script src="{{ path('fos_js_routing_js') }}"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+    $('.add-to-cart-button').on('click', function(e) {
+        e.preventDefault(); // Previne comportamentul implicit de redirecționare.
+
+        var productId = $(this).data('product-id');
+        var quantity = 1;
+
+        $.ajax({
+            url: Routing.generate('app_cart_add', { id: productId }), // Folosește funcția Routing pentru Symfony.
+            type: 'POST',
+            data: {
+                product_id: productId,
+                quantity: quantity
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    alert(response.message);
+                    // Actualizează numărul de produse din coș sau afișează alte informații necesare.
+                    $('#cart-count').text(parseInt($('#cart-count').text()) + quantity);
+                    $('#cart-total-sum').text(response.cartTotal + " €"); // Exemplu pentru actualizarea sumei totale.
+                }
+            },
+            error: function() {
+                alert('A apărut o eroare. Te rugăm să încerci din nou.');
+            }
+        });
+    });
+});
+
+
+</script>
+
 {% endblock %}

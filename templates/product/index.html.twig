@@ -38,19 +38,19 @@
             </div>
 
             <!-- Wishlist -->
-            <div class="mt-3">
+            <div class="mt-4">
                 {% if app.user %}
                     {% if product in app.user.wishlists %}
-                        <a href="{{ path('app_account_wishlist_remove', { id: product.id }) }}" class="text-danger">
+                        <a href="{{ path('app_account_wishlist_remove', { id: product.id }) }}" class="btn btn-danger btn-lg">
                             <i class="fa-solid fa-heart"></i> Retirer de la liste de souhaits
                         </a>
                     {% else %}
-                        <a href="{{ path('app_account_wishlist_add', { id: product.id }) }}" class="text-danger">
+                        <a href="{{ path('app_account_wishlist_add', { id: product.id }) }}" class="btn btn-danger btn-lg">
                             <i class="fa-regular fa-heart"></i> Ajouter à la liste de souhaits
                         </a>
                     {% endif %}
                 {% else %}
-                    <a data-bs-toggle="collapse" href="#collapseWishlistAlert" role="button" aria-expanded="false" aria-controls="collapseWishlistAlert" class="text-danger">
+                    <a data-bs-toggle="collapse" href="#collapseWishlistAlert" role="button" aria-expanded="false" aria-controls="collapseWishlistAlert" class="btn btn-danger btn-lg">
                         <i class="fa-solid fa-heart"></i> Ajouter à la liste de souhaits
                     </a>
                 {% endif %}

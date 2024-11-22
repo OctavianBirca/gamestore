@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class BookingController extends AbstractController
 {
-    #[Route('/order/pickup', name: 'app_booking')]
+    #[Route('/order/booking', name: 'app_booking')]
     public function booking(): Response
     {   
         $addresses = $this->getUser()->getAddresses();
@@ -39,7 +39,7 @@ class BookingController extends AbstractController
 
 
 
-    #[Route('/order/summary-pickup', name: 'app_booking_summary')]
+    #[Route('/order/summary-booking', name: 'app_booking_summary')]
     public function book(Request $request, Cart $cart, EntityManagerInterface $entityManager): Response
     {   
         if ($request->getMethod() != 'POST') {

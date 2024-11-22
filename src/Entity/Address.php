@@ -42,7 +42,7 @@ class Address
 
     public function __toString(): string 
     {
-        return $this->getFirstname().' '.$this->getLastname().' </br> '.$this->getAddress() ;
+        return $this->getFirstname().' '.$this->getLastname().' </br> '.$this->getAddress(). '</br> '.'<span class="postal">'.$this->getPostal().'</span>'.' '.$this->getCity().' </br> '.$this->getCountry();
     }
 
     public function getId(): ?int

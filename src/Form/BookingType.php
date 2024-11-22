@@ -38,8 +38,8 @@ class BookingType extends AbstractType
                 'widget' => 'single_text',
                 'label' => 'Choisissez une date de récupération',
                 'attr' => [
-                    'class' => 'pickup-date', // Adăugăm o clasă pentru a-l identifica în JavaScript
-                    'min' => (new \DateTime('+1 day'))->format('d-m-Y'), // Minimum o zi în viitor
+                    'class' => 'pickup-date', // Adding a class to the input
+                    'min' => (new \DateTime('+1 day'))->format('d-m-Y'), // minimum date is tomorrow
                 ], 
                 'required' => true,
 

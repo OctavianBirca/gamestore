@@ -26,7 +26,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ path('app_home') }}">
-                <i class="bi bi-controller me-2"></i>
+                <img src="{{ asset('assets/img/gamestore-logo.svg') }}" alt="Gamestore Logo" width="56" height="45">
                 Gamestore
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -63,12 +63,20 @@
                     
                 </ul>
                 <div class="d-flex align-items-center">
-                    <a href="{{ path('app_cart') }}" class="btn btn-outline-light me-3 position-relative">
-                        <i class="bi bi-cart3"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            {{ fullCartQuantity }}
-                        </span>
-                    </a>
+                    
+                    {% if app.user %}
+                        <a href="{{ path('app_cart') }}" class="btn btn-outline-light me-3 position-relative">
+                            <i class="bi bi-cart3"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{ fullCartQuantity }}
+                            </span>
+                        </a>   
+                        {% else %}
+                               
+                        {% endif %}
+                    
+                    
+                    
                     <div class="dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                         {% if app.user %}
@@ -152,6 +160,5 @@
 <script src="{{asset ('assets/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset ('assets/js/global.js')}}"></script> 
 {% endblock %}
-
 </body>
 </html>

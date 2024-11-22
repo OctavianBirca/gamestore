@@ -26,7 +26,7 @@
                 <span class="h4 mb-03">{{ product.price|priceEuro }}</span>
                 <div class="btn-group btn-group-primary" role="group" aria-label="Basic outlined button group">
                     <a href="{{ path ('app_product', {slug:product.slug}) }}" type="button" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
-                    <a href="{{ path ('app_product', {slug:product.slug}) }}" type="button" class="btn btn-outline-primary"><i class="bi bi-cart-plus"></i></i></a>
+                    <a href="{{ path('app_cart_add', { id: product.id }) }}" type="button" class="btn btn-outline-primary"><i class="bi bi-cart-plus"></i></i></a>
                     {% if app.user %}
                         {% if product in app.user.wishlists %}
                             <a href="{{ path('app_account_wishlist_remove', { id : product.id }) }}"  type="button" class="btn btn-outline-danger" >
