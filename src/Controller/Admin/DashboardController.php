@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Classe\SalesService;
-use App\Entity\Carrier;
+
 use App\Entity\Category;
 use App\Entity\Header;
 use App\Entity\Order;
@@ -48,13 +48,20 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+               
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
-        yield MenuItem::linkToCrud('Categories', 'fas fa-list', Category::class);
-        yield MenuItem::linkToCrud('Produits', 'fas fa-list', Product::class);
-        yield MenuItem::linkToCrud('Transporter', 'fas fa-list', Carrier::class);
         yield MenuItem::linkToCrud('Commande', 'fas fa-list', Order::class) ->setController(OrderCrudController::class);
+
+        yield MenuItem::section('Produits');
+        
+        yield MenuItem::linkToCrud('Categories', 'fa-solid fa-table-cells-large', Category::class);
+        yield MenuItem::linkToCrud('Produits', 'fas fa-list', Product::class);
+       
+        yield MenuItem::section('Site');
         yield MenuItem::linkToCrud('Header', 'fas fa-list', Header::class);
+        
+        yield MenuItem::section('Magazins');
         yield MenuItem::linkToCrud('Shop', 'fas fa-list', Shop::class);
         yield MenuItem::linkToRoute('Sales', 'fas fa-list', 'sales_overview');
     }

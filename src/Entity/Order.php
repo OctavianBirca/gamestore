@@ -23,12 +23,6 @@ class Order
     #[ORM\Column]
     private ?int $state = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $carrier = null;
-
-    #[ORM\Column(type: 'float', nullable: true)]
-    private ?float $carrierPrice = null;
-
     #[ORM\Column(type: Types::TEXT,  nullable: true)]
     private ?string $delivery = null;
 
@@ -42,14 +36,8 @@ class Order
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $stripe_session_id = null;
-
-
-    /* 
-    * Shop atributes
-    */
-
+    
+    
     #[ORM\ManyToOne(targetEntity: Shop::class)]
     #[ORM\JoinColumn(nullable: true)]
     private ?Shop $shop = null;
@@ -77,7 +65,7 @@ class Order
             $total += $product->getProductPrice()*$product->getProductQuantity();
         }
 
-        return $total + $this->getCarrierPrice();
+        return $total;
     }
 
     public function getId(): ?int
@@ -97,12 +85,7 @@ class Order
         return $this;
     }
 
-    /*
-     * 1:  En attente de paiment
-     * 2:  Paiment Valide
-     * 3:  Expedie
-     */
-
+   
     public function getState(): ?int
     {
         return $this->state;
@@ -115,29 +98,7 @@ class Order
         return $this;
     }
 
-    public function getCarrier(): ?string
-    {
-        return $this->carrier;
-    }
-
-    public function setCarrier(string $carrier): static
-    {
-        $this->carrier = $carrier;
-
-        return $this;
-    }
-
-    public function getCarrierPrice(): ?float
-    {
-        return $this->carrierPrice;
-    }
-
-    public function setCarrierPrice(float $carrierPrice): static
-    {
-        $this->carrierPrice = $carrierPrice;
-
-        return $this;
-    }
+    
 
     public function getDelivery(): ?string
     {
@@ -150,6 +111,7 @@ class Order
 
         return $this;
     }
+    
 
     /**
      * @return Collection<int, OrderDetail>
@@ -193,18 +155,7 @@ class Order
         return $this;
     }
 
-    public function getStripeSessionId(): ?string
-    {
-        return $this->stripe_session_id;
-    }
-
-    public function setStripeSessionId(?string $stripe_session_id): static
-    {
-        $this->stripe_session_id = $stripe_session_id;
-
-        return $this;
-    }
-
+  
     public function getShop(): ?Shop
     {
         return $this->shop;

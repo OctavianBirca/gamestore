@@ -18,7 +18,7 @@ class CategoryController extends AbstractController
 
         // Search for the category with the given slug
         if (!$category) {
-            throw $this->createNotFoundException('Categoria nu a fost găsită.');
+            throw $this->createNotFoundException('La categorie n\'existe pas');
         }
         
         return $this->render('category/index.html.twig', [

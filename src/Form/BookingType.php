@@ -38,7 +38,7 @@ class BookingType extends AbstractType
                 'widget' => 'single_text',
                 'label' => 'Choisissez une date de récupération',
                 'attr' => [
-                    'class' => 'pickup-date', // Adding a class to the input
+                    'class' => 'pickup-date', // Adding a css-class to the input
                     'min' => (new \DateTime('+1 day'))->format('d-m-Y'), // minimum date is tomorrow
                 ], 
                 'required' => true,

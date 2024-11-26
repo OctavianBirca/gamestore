@@ -50,8 +50,8 @@
                 </div>
 
                 <div class="col-3">
-                    <a href="{{path('app_order')}}" class="btn btn-success" >Commander</a>
-                    <a href="{{path('app_booking')}}" class="btn btn-success" >Reserver</a>
+                    
+                    <a href="{{path('app_order')}}" class="btn btn-success" >Reserver</a>
                 </div>
             
             </div>
@@ -60,40 +60,6 @@
     
 </div>
 
-<script src="{{ path('fos_js_routing_js') }}"></script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-    $('.add-to-cart-button').on('click', function(e) {
-        e.preventDefault(); // Previne comportamentul implicit de redirecționare.
-
-        var productId = $(this).data('product-id');
-        var quantity = 1;
-
-        $.ajax({
-            url: Routing.generate('app_cart_add', { id: productId }), // Folosește funcția Routing pentru Symfony.
-            type: 'POST',
-            data: {
-                product_id: productId,
-                quantity: quantity
-            },
-            success: function(response) {
-                if (response.status === 'success') {
-                    alert(response.message);
-                    // Actualizează numărul de produse din coș sau afișează alte informații necesare.
-                    $('#cart-count').text(parseInt($('#cart-count').text()) + quantity);
-                    $('#cart-total-sum').text(response.cartTotal + " €"); // Exemplu pentru actualizarea sumei totale.
-                }
-            },
-            error: function() {
-                alert('A apărut o eroare. Te rugăm să încerci din nou.');
-            }
-        });
-    });
-});
-
-
-</script>
 
 {% endblock %}

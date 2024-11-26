@@ -40,7 +40,7 @@
             {% endfor %} 
             <div class="card">
                 <div class="card-header">
-                    Adresse de livraison:
+                    Adresse de facturation:
                 </div>
                 <div class="card-body">
                     <h5 class="card-title small">{{choices.addresses.firstname}} {{choices.addresses.firstname}} </h5>
@@ -54,17 +54,20 @@
             
             <div class="card mt-3">
                 <div class="card-header">
-                    Livreur:
+                    Lieu de recuperation:
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title small">{{choices.carriers.name}}</h5>
+                    <h5 class="card-title small">{{choices.shop.name}}</h5>
                     <p class="card-text small">
-                        {{choices.addresses.address}} </br> 
-                        {{choices.carriers.description}}</br>
-                        {{choices.addresses.phone}}</p>
+                   
+                        {{choices.shop.address}} </br> 
+                        {{choices.shop.postalCode}}</p>
+                        {{choices.shop.city}}</br>
+                        
+                        
                 </div>
                 <div class="card-footer text-muted">
-                     {{choices.carriers.price|priceEuro}}
+                     {{choices.shop}}
                 </div>
             </div>
            
@@ -80,15 +83,15 @@
                     <p class="card-text small strong">
                         Total: {{totalSum|priceEuro}} </br> 
                         
-                        Transporter: {{choices.carriers.price|priceEuro}} 
+                        Date de recuperation: {{choices.pickup_date|date('d/m/Y')}} 
                     </p>
                 </div>
                 <div class="card-footer text-muted">
-                    Total commande: {{(totalSum + choices.carriers.price)|priceEuro}}
+                    Total commande: {{(totalSum)|priceEuro}}
                 </div>
                    
             </div>
-            <a href="{{ path('app_payment', { 'id_order' : order.id}) }}" class="btn btn-success mt-5 mw-100"> Payer+ </a>  
+            <a href="{{ path('app_order_booking', { 'id_order' : order.id}) }}" class="btn btn-success mt-5 mw-100"> Reserver </a>  
             
         </div> 
         

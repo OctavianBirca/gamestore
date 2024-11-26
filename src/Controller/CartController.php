@@ -6,18 +6,13 @@ namespace App\Controller;
 use App\Classe\Cart;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
-{   
-
-
-
-
-    #[Route('/mon-panier/{action}', name: 'app_cart', defaults: ['action' => null])]
+{
+    #[Route('account/mon-panier/{action}', name: 'app_cart', defaults: ['action' => null])]
     public function index(Cart $cart, $action): Response
     {   
         if ($action == "cancel") {
@@ -35,27 +30,19 @@ class CartController extends AbstractController
 
     #[Route('/cart/add/{id}', name: 'app_cart_add')]
     public function add($id, Cart $cart, ProductRepository $productRepository, Request $request): Response
-    {
+    {   
+        
         $product = $productRepository->findOneById($id);
         $cart->add($product);
 
-        // Verificăm dacă cererea este de tip AJAX
-        if ($request->isXmlHttpRequest()) {
-            // Răspuns pentru cererea AJAX
-            return new JsonResponse([
-                'status' => 'success',
-                'message' => "Le produit a ete ajoute a vortre panier",
-                'cartTotal' => $cart->getTotalSum()
-            ]);
-        }
-
-        // Răspuns pentru cererile normale
         $this->addFlash(
             'success',
             "Le produit a ete ajoute a vortre panier"
         );
 
         return $this->redirect($request->headers->get('referer'));
+       
+           
     }
 
     #[Route('/cart/decrease/{id}', name: 'app_cart_decrease')]

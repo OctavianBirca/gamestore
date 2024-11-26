@@ -32,13 +32,14 @@
                         <div class="col-md-6">
                             <div class="card border-light mb-3">
                                 <div class="card-body">
-                                    <h5 class="card-title">Shop</h5>
+                                    <h5 class="card-title">Magasin</h5>
                                     <p class="card-text">
-                                        {% if order.carrier %}
-                                            {{ order.carrier }}
-                                        {% else %}
-                                            {{ order.shop }}
-                                        {% endif %}
+                                        
+                                            {{ order.shop }} </br>
+                                            {{order.shop.address}} </br> 
+                                            {{order.shop.postalCode}}</br>
+                                            {{order.shop.city}}</br>
+                                    
                                     </p>
                                 </div>
                             </div>
@@ -69,15 +70,12 @@
                                     {% set totalPrice = totalPrice + (product.productQuantity * product.productPrice) %}
                                 </tr>
                             {% endfor %}
-                            <tr class="table-light">
-                                <td colspan="4" class="text-end">{{ order.carrier }}</td>
-                                <td>{{ order.carrierPrice|priceEuro }}</td>
-                            </tr>
+                            
                             <tr class="fw-bold">
                                 <td colspan="2"></td>
                                 <td>Total : {{ totalPrice|priceEuro }}</td>
                                 <td>Total Quantité : {{ totalQuantity }}</td>
-                                <td>Total Final : {{ (totalPrice + order.carrierPrice)|priceEuro }}</td>
+                                <td>Total Final : {{ totalPrice|priceEuro }}</td>
                             </tr>
                         </tbody>
                     </table>
