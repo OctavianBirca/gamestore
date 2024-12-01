@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="{{asset ('assets/css/bootstrap.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
+    {{ encore_entry_link_tags('app') }}
     <!-- Custom styles for this template -->
     <link href="{{asset ('assets/css/carousel.css')}}" rel="stylesheet">
     <link href="{{asset ('assets/css/custom.css')}}" rel="stylesheet">
@@ -90,8 +90,11 @@
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <li><a class="dropdown-item" href="{{ path('admin') }}"><i class="bi bi-person-fill-gear me-2"></i>Administration</a></li>
                                 {% endif %}
-                                <li><a class="dropdown-item" href="{{path ('app_account') }}"><i class="bi bi-cart-check me-2"></i>Mes commandes</a></li>
-                                <li><a class="dropdown-item" href="{{path ('app_account_wishlist') }}"><i class="bi bi-bag-heart me-2"></i>Wishlist</a></li>
+                                {% if is_granted('ROLE_EMPLOYEE') %}
+                                    <li><a class="dropdown-item" href="{{ path('employee') }}"><i class="bi bi-person-fill-gear me-2"></i>Administration</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{{path('app_account') }}"><i class="bi bi-cart-check me-2"></i>Mes commandes</a></li>
+                                <li><a class="dropdown-item" href="{{path('app_account_wishlist') }}"><i class="bi bi-bag-heart me-2"></i>Wishlist</a></li>
                                
                                 <li><a class="dropdown-item" href="{{ path('_logout_main') }}"><i class="bi bi-box-arrow-right me-2"></i>Deconnexion</a></li>
                             {% else %}
@@ -158,7 +161,10 @@
 
 {% block javascripts %}
 <script src="{{asset ('assets/js/bootstrap.bundle.min.js')}}"></script>
-<script src="{{asset ('assets/js/global.js')}}"></script> 
+
+
+{{ encore_entry_script_tags('app') }}
+
 {% endblock %}
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Account;
 
-use App\Classe\Cart;
+use App\Service\Cart;
 use App\Entity\Address;
 use App\Form\AddressUserType;
 use App\Repository\AddressRepository;

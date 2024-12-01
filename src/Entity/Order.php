@@ -35,8 +35,6 @@ class Order
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-
-    
     
     #[ORM\ManyToOne(targetEntity: Shop::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -44,6 +42,9 @@ class Order
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $pickupDate = null;
+
+    #[ORM\Column(type: Types::FLOAT, nullable: false)]
+    private ?float $totalPrice = null;
 
 
     /*
@@ -177,6 +178,18 @@ class Order
         $this->pickupDate = $pickupDate;
         return $this;
     }
+
+    public function getTotalPrice(): ?float
+    {
+        return $this->totalPrice;
+    }
+
+    public function setTotalPrice(float $totalPrice): self
+    {
+        $this->totalPrice = $totalPrice;
+        return $this;
+}
+
 
 
 }

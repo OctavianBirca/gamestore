@@ -2,7 +2,7 @@
 
 namespace App\Twig;
 
-use App\Classe\Cart;
+use App\Service\Cart;
 use App\Entity\Shop;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
@@ -26,6 +26,11 @@ class AppExtentions extends AbstractExtension implements GlobalsInterface
         $this->shopRepository = $shopRepository;
     }
 
+
+    /**
+     * Filters for Twig templates, Transform price to Euro format
+     */
+
     public function getFilters()
     {
 
@@ -40,6 +45,12 @@ class AppExtentions extends AbstractExtension implements GlobalsInterface
         return number_format($number, '2',','). ' €';
     }
 
+
+
+    /**
+     * Global variables for Twig templates
+     */
+    
     public function getGlobals(): array
     {
         return [ 

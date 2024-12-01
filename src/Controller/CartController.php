@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 
-use App\Classe\Cart;
+use App\Service\Cart;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,16 +12,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
-    #[Route('account/mon-panier/{action}', name: 'app_cart', defaults: ['action' => null])]
-    public function index(Cart $cart, $action): Response
+    #[Route('/mon-panier', name: 'app_cart')]
+    public function index(Cart $cart): Response
     {   
-        if ($action == "cancel") {
-            $this->addFlash(
-                'info',
-                'Paiment annule. Vous pouvez mettre a jous votre panier et votre commande.'
-            );
-        }
-
+    
         return $this->render('cart/index.html.twig', [
             'cart' => $cart->getCart(),
             'totalSum' => $cart->getTotalSum()

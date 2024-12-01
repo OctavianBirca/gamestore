@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
-use App\Classe\Cart;
+use App\Service\Cart;
+use App\Service\Mail;
+use App\Service\State;
 use App\Entity\Order;
 use App\Entity\OrderDetail;
 use App\Form\BookingType;
@@ -29,13 +31,13 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('app_account_address_form');
 
         }
-        $form = $this->createForm(BookingType::class, null, [
+        $form = $this->createForm(OrderType::class, null, [
             'addresses' => $addresses,
             'action' => $this->generateUrl('app_order_summary')
         ]);
 
         return $this->render('order/index.html.twig', [
-            'bookingForm' => $form->createView(),
+            'orderForm' => $form->createView(),
         ]);
     }
 
@@ -46,36 +48,25 @@ class OrderController extends AbstractController
         if ($request->getMethod() != 'POST') {
             return $this->redirectToRoute('app_cart');
         }
-
+    
         $products = $cart->getCart();
-
-        $form = $this->createForm(BookingType::class, null, [
+    
+        $form = $this->createForm(OrderType::class, null, [
             'addresses' => $this->getUser()->getAddresses(),
         ]);
-
+    
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()){
-
-            $pickupDate = $form->get('pickup_date')->getData();
-            $currentDate = new DateTime();
-            $maxDate = (clone $currentDate)->modify('+7 days');
-
-
-            if ($pickupDate < $currentDate || $pickupDate > $maxDate || in_array($pickupDate->format('l'), ['Monday', 'Sunday'])) {
-                $this->addFlash('error', 'La date de retrait est invalide. Veuillez choisir une date valide.');
-                return $this->redirectToRoute('app_reservation');
-            }
-
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            
             $addressObj = $form->get('addresses')->getData(); 
-
+    
             $address = $addressObj->getFirstname().' '.$addressObj->getLastname(). '<br/>';
             $address .= $addressObj->getAddress(). '<br/>';
             $address .= $addressObj->getPostal().' '.$addressObj->getCity(). '<br/>';
             $address .= $addressObj->getCountry(). '<br/>';
             $address .= $addressObj->getPhone();
-
-           
+    
             $order = new Order();
             $order->setUser($this->getUser());
             $order->setCreatedAt(new DateTime());
@@ -83,9 +74,8 @@ class OrderController extends AbstractController
             $order->setShop($form->get('shop')->getData());
             $order->setPickupDate($form->get('pickup_date')->getData());
             $order->setDelivery($address);
-
+    
             foreach ($products as $product) {
-                
                 $orderDetail = new OrderDetail();
                 $orderDetail->setProductName($product['object']->getName());
                 $orderDetail->setProductImage($product['object']->getImage());
@@ -94,19 +84,25 @@ class OrderController extends AbstractController
                 $order->addOrderDetail($orderDetail);
             }
 
+            $order->setTotalPrice($cart->getTotalSum());
+    
             $entityManager->persist($order);
             $entityManager->flush();
-            
-
-        return $this->render('order/summary.html.twig', [
-            'choices' => $form->getData(),
-            'cart' => $products,
-            'order' => $order,
-            'totalSum' => $cart->getTotalSum(),
-        ]);
+    
+            return $this->render('order/summary.html.twig', [
+                'choices' => $form->getData(),
+                'cart' => $products,
+                'order' => $order,
+                'totalSum' => $cart->getTotalSum(),
+            ]);
         }
+    
+        
+        $this->addFlash('error', 'Le formulaire n\'est pas valide.');
+        return $this->redirectToRoute('app_order');
     }
-
+    
+    
     #[Route('/order/reservation/{id_order}', name: 'app_order_booking')]
     public function confirmReservation(int $id_order, OrderRepository $orderRepository, EntityManagerInterface $entityManager, Cart $cart): Response
     {
@@ -139,6 +135,8 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('app_order_success', ['id_order' => $order->getId()]);
     }
 
+    
+    
     #[Route('/order/success/{id_order}', name: 'app_order_success')]
     public function reservationSuccess(int $id_order, OrderRepository $orderRepository, EntityManagerInterface $entityManager, Cart $cart): Response
     {
@@ -153,13 +151,22 @@ class OrderController extends AbstractController
 
         if ($order->getState() == 6){
             
+            $state = $order->getState();
             $cart->remove();
             $entityManager->flush();
-        }
+
+            $mail = new Mail();
+            $vars = [
+                'firstname' => $order->getUser()->getFirstname(),
+                'id_order' => $order->getId()
+            ];
+            $mail->send($order->getUser()->getEmail(), $order->getUser()->getFirstname().' '.$order->getUser()->getLastname(), State::STATE[$state]['email_subject'], State::STATE[$state]['email_template'], $vars);
         
+            return $this->redirectToRoute('app_order_success', ['id_order' => $order->getId()]);
 
-               
 
+        }
+                       
         return $this->render('order/success.html.twig', [
             'order' => $order,
         ]);

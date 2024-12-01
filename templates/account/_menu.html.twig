@@ -5,34 +5,34 @@
   </div>
   <ul class="list-group list-group-flush">
     <li class="list-group-item">
-      <a class="nav-link" href="{{path ('app_account') }}">
+      <a class="" href="{{path ('app_account') }}">
         <i class="bi bi-basket-fill"></i> Mes commandes
       </a>
     </li>
     <li class="list-group-item">
-      <a class="nav-link" href="{{path ('app_account_wishlist') }}">
+      <a class="" href="{{path ('app_account_wishlist') }}">
         <i class="bi bi-heart-fill"></i> Wishlist
       </a>
     </li>
     <li class="list-group-item">
-      <a class="nav-link" href="{{path ('app_account_addresses') }}">
+      <a class="" href="{{path ('app_account_addresses') }}">
         <i class="bi bi-geo-alt-fill"></i> Mes adresses
       </a>
     </li>
     <li class="list-group-item">
-      <a class="nav-link" href="{{path ('app_account_modify_pwd') }}">
+      <a class="" href="{{path ('app_account_modify_pwd') }}">
         <i class="bi bi-key-fill"></i> Modifier le mot de passe
       </a>
     </li>
     {% if is_granted('ROLE_ADMIN') %}
       <li class="list-group-item">
-        <a class="nav-link" href="{{ path('admin') }}">
+        <a class="" href="{{ path('admin') }}">
           <i class="bi bi-gear-fill"></i> Administration
         </a>
       </li>
     {% endif %}
     <li class="list-group-item">
-      <a class="nav-link text-danger" href="{{path ('_logout_main') }}">
+      <a class="text-danger" href="{{path ('_logout_main') }}">
         <i class="bi bi-box-arrow-right"></i> Déconnexion
       </a>
     </li>

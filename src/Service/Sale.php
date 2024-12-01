@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Classe;
+namespace App\Service;
 
 use MongoDB\Client;
 use MongoDB\Collection;
 
-class SalesService
+class Sale
 {
     private Collection $collection;
 

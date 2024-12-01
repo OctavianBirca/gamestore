@@ -2,8 +2,8 @@
 
 namespace App\Controller\Employee;
 
-use App\Classe\Mail;
-use App\Classe\State;
+use App\Service\Mail;
+use App\Service\State;
 use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;

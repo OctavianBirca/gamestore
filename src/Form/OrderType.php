@@ -4,9 +4,11 @@ namespace App\Form;
 
 use App\Entity\Address;
 use App\Entity\Carrier;
+use App\Entity\Shop;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,14 +28,23 @@ class OrderType extends AbstractType
                 'label_html' => true
             ])
 
-            ->add('carriers', EntityType::class, [
-                'label' => "Votre transporteur",
-                'required' => true, 
-                'class' => Carrier::class, 
-                'expanded' => true, 
-               #'choices' => $options['carriers'],
-                'label_html' => true
+            ->add('shop', EntityType::class, [
+                'class' => Shop::class,
+                'required' => true,
+                'label' => 'Choisissez le magasin pour récupérer votre commande',
             ])
+            
+            ->add('pickup_date', DateType::class, [
+                'widget' => 'single_text',
+                'label' => 'Choisissez une date de récupération',
+                'attr' => [
+                    'class' => 'pickup-date', // Adding a css-class to the input
+                    'min' => (new \DateTime('+1 day'))->format('d-m-Y'), // minimum date is tomorrow
+                ], 
+                'required' => true,
+
+            ])
+            
 
             ->add('submit', SubmitType::class, [
                 'label' => 'Valider',

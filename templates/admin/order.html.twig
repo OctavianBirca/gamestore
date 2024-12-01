@@ -16,7 +16,7 @@
 {{ include('admin/state.html.twig', {field : {'value' : order.state}}) }}
 
 <span> Passee le {{order.createdAt|date('d/m/Y')}} </span> <br/>
-<span> Stripe session Id {{order.stripeSessionId}} </span>
+
 
  
 
@@ -27,13 +27,9 @@
     </div>
     <div class="col-md-6 bg-light">
         <h4>Shop</h4>
-        {% if order.carrier %}
-                
-          {{order.carrier}}
-                 
-        {% else %}
+        
           {{order.shop}}
-        {% endif %}
+        
     </div>
 </div>
 
@@ -58,6 +54,7 @@
   <tbody>
   {% set totalQuantity = 0 %}
   {% set totalPrice = 0 %}
+    
     {% for product in order.orderDetails %}
     <tr>
         
@@ -72,18 +69,15 @@
     </tr>
     {% endfor %}
 
-    <tr>
-      <td colspan="4">{{order.carrier}}</td>
-      <td>{{order.carrierPrice|priceEuro}}</td>
-    </tr>
+    
 
     
     <tr>
       <th scope="col">Total</th>
       <th scope="col"></th>
-      <th scope="col">{{totalPrice|priceEuro}}</th>
+      <th scope="col"></th>
       <th scope="col">{{totalQuantity}}</th>
-      <th scope="col">{{(totalPrice + order.carrierPrice)|priceEuro}}</th>
+      <th scope="col">{{order.totalPrice|priceEuro}}</th>
     </tr>
      
   </tbody>

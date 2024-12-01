@@ -5,14 +5,14 @@ namespace App\Controller\Admin;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
-use App\Classe\SalesService;
+use App\Service\Sale;
 use Symfony\Component\HttpFoundation\Request;
 
 class SalesController extends AbstractController
 {
-    private SalesService $salesService;
+    private Sale $salesService;
 
-    public function __construct(SalesService $salesService)
+    public function __construct(Sale $salesService)
     {
         $this->salesService = $salesService;
     }

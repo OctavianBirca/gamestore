@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
-use App\Classe\Mail;
-use App\Classe\SalesService;
-use App\Classe\State;
+use App\Service\Mail;
+use App\Service\Sale;
+use App\Service\State;
 use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -27,7 +27,7 @@ class OrderCrudController extends AbstractCrudController
 
     private $salesService;
 
-    public function __construct(EntityManagerInterface $entityManagerInterface, SalesService $salesService)
+    public function __construct(EntityManagerInterface $entityManagerInterface, Sale $salesService)
     {
         $this->em = $entityManagerInterface;
         $this->salesService = $salesService;
@@ -84,7 +84,7 @@ class OrderCrudController extends AbstractCrudController
                     $this->salesService->recordSale(
                         $product->getProductName(),
                         $product->getProductPrice(),
-                        (new \DateTime())->format('Y-m-d H:i:s'),
+                        (new \DateTime())->format('d-m-Y H:i:s'),
                         $order->getShop()->getName(),
                         $product->getProductQuantity()
                     );

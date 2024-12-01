@@ -135,7 +135,7 @@ class Product
 
     public function setCategory(?Category $category): static
     {
-        $this->category = $category;
+        $this->categories = $category;
 
         return $this;
     }

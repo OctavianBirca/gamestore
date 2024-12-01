@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Classe\SalesService;
+use App\Service\Sale;
 
 use App\Entity\Category;
 use App\Entity\Header;
